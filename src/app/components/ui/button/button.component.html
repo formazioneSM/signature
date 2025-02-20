@@ -1,0 +1,11 @@
+<button
+  [type]="type()"
+  [disabled]="disabled()"
+  [class]="'btn ' + aspect() + ' ' + size()"
+  [class.disabled]="disabled()"
+  (click)="onClick.emit()"
+  (focus)="onFocus.emit()"
+  (blur)="onBlur.emit()"
+>
+  <ng-content></ng-content>
+</button>

@@ -1,0 +1,396 @@
+
+<div id="signature">
+  <table
+    id=""
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="
+      border-collapse: collapse;
+      border-spacing: 0px;
+      color: rgb(85, 85, 85);
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      background: none;
+      border: 0px;
+      margin: 0px;
+      padding: 0px;
+    "
+  >
+    <tbody>
+      <!-- 'https://sysmanagement.it/signature-assets/square-logo.gif' -->
+      <!-- <tr [style.border-color]="getColor(signatureData())" style="border-bottom: 1px solid gray; padding-bottom: 12px;"> -->
+      <tr>
+        <td valign="middle">
+          <div
+            class=""
+            style="
+              width: 100px;
+              height: 100px;
+              display: flex;
+              align-items: center; /* background-repeat: no-repeat;background-position: center;background-size: contain; */
+            "
+          >
+            <img
+              width="100"
+              [src]="signature().version?.logo ??  signature().azienda?.icon!"
+              style="width: 100px"
+              class="CToWUd"
+            />
+          </div>
+          <!-- <img style="width:100px;"    src="{{ dynamic === 'animato' ?     'https://sysmanagement.it/signature-assets/square-logo.gif' :     dynamic === 'holiday' ?     'https://sysmanagement.it/signature-assets/square-xmas.png' :     dynamic === 'proud' ?     'https://sysmanagement.it/signature-assets/square-logo.png' :     'https://sysmanagement.it/signature-assets/square-logo.png' }}"    class="CToWUd"> -->
+        </td>
+        <td style="padding: 0px 0px 0px 12px">
+          <table
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              border-collapse: collapse;
+              border-spacing: 0px;
+              background: none;
+              border: 0px;
+              margin: 0px;
+              padding: 0px;
+            "
+          >
+            <tbody>
+              <tr>
+                <td
+                  colspan="2"
+                  
+                  style="
+                    padding-bottom: 5px;
+                    font-size: 16px;
+                    font-family: Arial, sans-serif;
+                    line-height: 20px;
+                  "
+                  [style.color]="signature().azienda?.value?.color"
+                >
+                  <b>{{
+                    signature().nomecognome !== ""
+                      ? signature().nomecognome
+                      : "Nome e cognome"
+                  }}</b
+                  ><br />
+                  @if(
+                 ( signature().area?.name === null 
+                  || signature().area?.name === undefined
+                  || signature().area?.name === '') &&
+                  (getNames(signature().ruolo) === null ||
+                  getNames(signature().ruolo) === undefined ||
+                  getNames(signature().ruolo) === '' )
+                  ){
+
+                    <span
+                      style="
+                        font-size: 14px;
+                        color: rgb(51, 51, 51);
+                        font-style: italic;
+                      "
+                    >
+                      Titolo lavorativo
+                    </span>
+                  }
+                  <span
+                    style="
+                      font-size: 14px;
+                      color: rgb(51, 51, 51);
+                      font-style: italic;
+                    "
+                  >
+                    {{ signature().area?.name }}
+                  </span>
+
+                  <span
+                    style="
+                      font-size: 14px;
+                      color: rgb(51, 51, 51);
+                      font-style: italic;
+                    "
+                  >
+                    {{ getNames(signature().ruolo) }}
+                  </span>
+
+                  <!-- <span *ngIf="selectedTitoloLavorativo && selectedRuoloProgetto && selectedRuoloProgetto!='undefined'" style="font-size:14px; color:rgb(51,51,51); font-style:italic">, {{selectedRuoloProgetto}}</span>-->
+                </td>
+              </tr>
+              @if (signature().indirizzo?.phone && signature().interno === '') {
+              <tr>
+                <td
+                  width="20"
+                  valign="top"
+                  [style.color]="signature().azienda?.value?.color"
+                  style="
+                    vertical-align: top;
+                    width: 20px;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <b>p:</b>
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    vertical-align: top;
+                    color: rgb(51, 51, 51);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  {{ signature().indirizzo?.labelPhone }}
+                </td>
+              </tr>
+              } @else if (signature().indirizzo?.phone && (signature().interno?.length)! > 0) {
+              <tr>
+                <td
+                  width="20"
+                  valign="top"
+                  [style.color]="signature().azienda?.value?.color"
+                  style="
+                    vertical-align: top;
+                    width: 20px;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <b>p:</b>
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    vertical-align: top;
+                    color: rgb(51, 51, 51);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  {{ signature().indirizzo?.internoLabel }} {{ signature().interno }}
+                </td>
+              </tr>
+              } @if (signature().mobile) {
+              <tr>
+                <td
+                  width="20"
+                  valign="top"
+                  [style.color]="signature().azienda?.value?.color"
+                  style="
+                    vertical-align: top;
+                    width: 20px;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <b>m:</b>
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    vertical-align: top;
+                    color: rgb(51, 51, 51);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  +39 {{ signature().mobile }}
+                </td>
+              </tr>
+              }
+              <tr>
+                <td
+                  width="20"
+                  valign="top"
+                  [style.color]="signature().azienda?.value?.color"
+                  style="
+                    vertical-align: top;
+                    width: 20px;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <b>a:</b>
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    vertical-align: top;
+                    color: rgb(51, 51, 51);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  {{ signature().indirizzo?.address ?? "Scegli una sede" }}
+                </td>
+              </tr>
+              @if (signature().azienda?.value?.website?.href) {
+              <tr>
+                <td
+                  width="20"
+                  valign="top"
+                  [style.color]="signature().azienda?.value?.color"
+                  style="
+                    vertical-align: top;
+                    width: 20px;
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <b>w:</b>
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    vertical-align: top;
+                    color: rgb(51, 51, 51);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    line-height: 14px;
+                  "
+                >
+                  <a
+                    style="color: rgb(51, 51, 51); text-decoration: underline"
+                    [attr.href]="signature().azienda?.value?.website?.href"
+                    target="_blank"
+                    >{{ signature().azienda?.value?.website?.name }}</a
+                  ><br />
+                  <!-- <a style="color:rgb(51,51,51); text-decoration: underline;"href="https://www.sysmanagement.it" target="_blank"data-saferedirecturl="https://www.google.com/url?q=https://www.sysmanagement.it&amp;source=gmail&amp;ust=1585170474446000&amp;usg=AFQjCNGMbtUVNNZzJq5qlZKSSuPFZ9aYKw">sysmanagement.it</a><br> -->
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div
+  *ngIf="companies()[selectedCompany].btnName!='DP' || ( companies()[selectedCompany].btnName==='DP' &&  disc === true)"
+      class="separator" [style.color]="getColor(signatureData())" style="display: block; position: relative; width: 100%;
+      letter-spacing: -8px;">
+  ______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+</div> -->
+  @if (!['DP', 'DP Innovation', 'DP Cyber & AI', 'DP Infrastructures
+  Selta'].includes(signature().azienda?.value?.btnName!) || (
+  signature().azienda?.value?.btnName==='DP' && signature().disclaimer)) {
+  <hr
+    [style.border-color]="signature().azienda?.value?.color"
+    style="margin-bottom: 0"
+  />
+  } @if (!['DP'].includes(signature().azienda?.value?.btnName!)) {
+  <div>
+    <br />
+  </div>
+  } @if (!['DP', 'Selta', 'DP Innovation', 'DP Cyber & AI', 'DP Infrastructures Selta'].includes(signature().azienda?.value?.btnName!)) {
+  <div
+    class="description"
+    style="
+      display: flex;
+      padding-top: 2px;
+      font-size: 12px;
+      align-items: center;
+      width: 100%;
+      flex-wrap: wrap;
+    "
+  >
+    <b [style.color]="signature().azienda?.value?.color">{{
+      signature().azienda?.value?.name
+    }}</b
+    >&nbsp;è una società soggetta ad attività di direzione e coordinamento
+    di&nbsp;<a
+      href="https://www.dplatforms.it/"
+      target="_blank"
+      class="dp-wrapper"
+      style="padding-left: 5px; position: relative; top: -3px"
+      ><img
+        style="width: 100%"
+        src="https://sysmanagement.it/signature-assets/digitalplatform.png"
+        alt=""
+    /></a>
+  </div>
+  } @if (['Selta'].includes(signature().azienda?.value?.btnName!)) {
+  <div
+    class="description"
+    style="
+      display: flex;
+      padding-top: 2px;
+      font-size: 12px;
+      align-items: center;
+      width: 100%;
+      flex-wrap: wrap;
+    "
+  >
+    &nbsp;<a
+      href="https://www.dplatforms.it/"
+      target="_blank"
+      class="dp-wrapper"
+      style="padding-left: 5px; position: relative; top: -3px"
+      ><img
+        style="width: 100%"
+        src="https://sysmanagement.it/signature-assets/digitalplatform.png"
+        alt=""
+    /></a>
+    &nbsp;Group's BU
+  </div>
+  } @if (selectedBanner!==undefined) {
+  <div class="banner">
+    <img
+      src="{{ banners[selectedBanner!].image }}"
+      class="CToWUd"
+      style="width: 100%"
+    />
+  </div>
+  }
+  <div>
+    <br />
+  </div>
+  @if (signature().disclaimer) {
+  <div class="disclaimer" style="color: gray; font-size: 10px; opacity: 0.7">
+    This e-mail and any attachments are confidential and may contain privileged
+    information intended for the addressee(s) only. Dissemination, copying,
+    printing, or use by anybody else is unauthorized. If you are not the
+    intended recipient, please delete this message and any attachments and
+    advise the sender by return e-mail, Thanks.
+    <br />
+    Questo messaggio e i suoi allegati sono indirizzati esclusivamente alle
+    persone indicate. La diffusione, copia o qualsiasi altra azione derivante
+    dalla conoscenza di queste informazioni sono rigorosamente vietate. Qualora
+    abbiate ricevuto questo documento per errore siete cortesemente pregati di
+    darne immediata comunicazione al mittente e di provvedere alla sua
+    distruzione, Grazie.
+  </div>
+  } @if (signature().disclaimer) {
+  <br />
+  } @if (signature().avvisoambientale) {
+  <div
+    class="disclaimer"
+    style="
+      display: flex;
+      color: green;
+      font-size: 10px;
+      opacity: 1;
+      font-style: italic;
+    "
+  >
+    <img
+      src="https://sysmanagement.it/signature-assets/eco.png"
+      alt="environmental warning"
+    />
+    &nbsp; &nbsp; &nbsp;
+    <div>
+      Please consider the environment before printing this email.
+      <br />
+      Per favore pensate all'ambiente prima di stampare questa e-mail.
+    </div>
+  </div>
+  }
+</div>

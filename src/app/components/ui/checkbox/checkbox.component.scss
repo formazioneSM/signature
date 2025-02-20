@@ -1,0 +1,111 @@
+:host {
+  &.ng-invalid {
+    .my-checkbox__input {
+      border: 1px solid var(--border-error, #f04438);
+    }
+    .my-checkbox__input:checked:before, .my-checkbox__input:checked:after{
+      border: 1px solid var(--border-error, #f04438);
+    }
+  }
+}
+.my-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.disabled {
+  // opacity: .6;
+  pointer-events: none;
+}
+
+.indeterminate {
+  position: relative;
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  appearance: none;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--interaction-default, #334155);
+  background: var(--background-secondary, #f8fafc);
+  div {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    background: var(--foreground-brand-primary, #064a87);
+  }
+  &.disabled {
+    div {
+      background: var(--foreground-disabled, #64738b);
+    }
+  }
+}
+.my-checkbox__input {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  appearance: none;
+  cursor: pointer;
+  background: var(--background-secondary, #f8fafc);
+  border-radius: 4px;
+}
+
+.my-checkbox__input:checked:before {
+  background: var(--foreground-brand-primary, #064a87);
+  border: 1px solid var(--foreground-brand-primary, #064a87);
+}
+
+.my-checkbox__input:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 4px;
+  border: 1px solid var(--foreground-disabled, #64738b);
+  background: var(--background-secondary, #f8fafc);
+}
+
+.my-checkbox__input:checked:after {
+  width: 7.8px;
+  height: 3.7px;
+  transition: height 0.08s ease-out, width 0.08s ease-out 0.1s;
+  border-color: var(--background-primary, #fff);
+  border-radius: 0.4px;
+}
+
+.my-checkbox__input:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform: rotate(-45deg);
+  transform-origin: 14px -1px;
+  border-bottom: 2.5px solid transparent;
+  border-left: 2.5px solid transparent;
+}
+
+.my-checkbox__label {
+  margin-left: 0.5rem;
+  color: var(--foreground-primary, #0f172a);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.035px;
+  &.disabled {
+    color: var(--foreground-secondary, #334155);
+  }
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.035px;
+}

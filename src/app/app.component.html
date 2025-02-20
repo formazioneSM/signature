@@ -1,0 +1,103 @@
+<div class="container">
+  <section>
+    <div class="sub-brand"> <span class="name-app">Signature</span> </div>
+    <app-signature></app-signature>
+    <div style="justify-self: center;">
+      <lieveeto-button (onClick)="copySignature()">
+        Copia la firma
+      </lieveeto-button>
+    </div>
+  </section>
+  <section>
+    <div class="sizing" [class.active]="activeConfig()" (click)="activeConfig.set(!activeConfig())">
+      <svg
+      width="25"
+      height="24"
+      viewBox="0 0 25 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="CaretDown">
+        <path
+          id="Vector"
+          d="M20.7806 9.53063L13.2806 17.0306C13.211 17.1004 13.1283 17.1557 13.0372 17.1934C12.9462 17.2312 12.8486 17.2506 12.75 17.2506C12.6514 17.2506 12.5538 17.2312 12.4628 17.1934C12.3717 17.1557 12.289 17.1004 12.2194 17.0306L4.71937 9.53063C4.57864 9.3899 4.49958 9.19902 4.49958 9C4.49958 8.80098 4.57864 8.61011 4.71937 8.46937C4.8601 8.32864 5.05097 8.24958 5.25 8.24958C5.44902 8.24958 5.63989 8.32864 5.78062 8.46937L12.75 15.4397L19.7194 8.46937C19.7891 8.39969 19.8718 8.34442 19.9628 8.3067C20.0539 8.26899 20.1515 8.24958 20.25 8.24958C20.3485 8.24958 20.4461 8.26899 20.5372 8.3067C20.6282 8.34442 20.7109 8.39969 20.7806 8.46937C20.8503 8.53906 20.9056 8.62178 20.9433 8.71283C20.981 8.80387 21.0004 8.90145 21.0004 9C21.0004 9.09855 20.981 9.19613 20.9433 9.28717C20.9056 9.37822 20.8503 9.46094 20.7806 9.53063Z"
+          fill="#0F172A"
+        />
+      </g>
+    </svg>
+    </div>
+    <form [formGroup]="form">
+      <div class="formLine">
+        <lieveeto-select
+          [label]="'Azienda del gruppo DigitalPlatforms'"
+          [labelStyles]="{ color: 'white' }"
+          formControlName="azienda"
+          searchble
+          (selection)="checkAddressAndVersion($event)"
+          [options]="companies.value()!"
+        />
+        <lieveeto-select
+          [label]="'Versione logo'"
+          [labelStyles]="{ color: 'white' }"
+          formControlName="version"
+          [options]="versions()!"
+        />
+      </div>
+      <div class="formLine">
+        <lieeveto-input
+          formControlName="nomecognome"
+          [label]="'Nome e cognome'"
+          [labelStyles]="{ color: 'white' }"
+        />
+        <lieveeto-select
+          [label]="'Area di competenza'"
+          [labelStyles]="{ color: 'white' }"
+          searchble
+          withCustomValue
+          formControlName="area"
+          [options]="areas.value()!"
+        />
+      </div>
+      <lieveeto-select
+        [label]="'Titolo lavorativo'"
+        [labelStyles]="{ color: 'white' }"
+        multiple
+        searchble
+        withCustomValue
+        formControlName="ruolo"
+        [options]="roles.value()!"
+      />
+      <div style="display: grid;grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+          <lieveeto-select
+          [label]="'Indirizzo'"
+          [labelStyles]="{ color: 'white' }"
+          formControlName="indirizzo"
+          [options]="workPlaces()!"
+          (selection)="checkInterno($event)"
+          />
+          <lieeveto-input
+            [label]="'Mobile (opzionale)'"
+            [labelStyles]="{ color: 'white' }"
+            [type]="'number'"
+            formControlName="mobile"
+          />
+          <lieeveto-input
+            [label]="'Interno (opzionale)'"
+            [labelStyles]="{ color: 'white' }"
+            [type]="'number'"
+            formControlName="interno"
+          />
+      </div>
+      <lieveeto-checkbox
+        [label]="'aggiungi banner'"
+        [labelStyles]="{ color: 'white' }"
+        formControlName="disclaimer"
+      />
+      <lieveeto-checkbox
+        [label]="'aggiungi avviso ambientale'"
+        [labelStyles]="{ color: 'white' }"
+        formControlName="avvisoambientale"
+      />
+    </form>
+  </section>
+</div>

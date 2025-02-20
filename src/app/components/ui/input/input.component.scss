@@ -1,0 +1,61 @@
+:host {
+  width: 100%;
+  &:has(input:disabled){
+    opacity: .8;
+  }
+  input {
+    display: flex;
+    height: 40px;
+    padding: 8px;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary, #cbd5e1);
+    background: var(--background-secondary, #f8fafc);
+    color: var(--foreground-tertiary, #475569);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.08px;
+    &:focus {
+      outline: 1px solid var(--border-brand, #0c8ced);
+    }
+  }
+  .helperText {
+    color: var(--foreground-tertiary, #475569);
+    /* Inter/Caption */
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.048px;
+    margin: 5px 0 5px 5px
+  }
+  label {
+    color: var(--foreground-secondary, #334155);
+    /* Inter/Subtitle 2 */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.014px;
+    margin: 0 0 5px 5px;
+  }
+  &.ng-invalid {
+    input {
+      outline: 1px solid var(--border-error, #f04438);
+    }
+  }
+  &:disabled {
+
+    input {
+      background: var(--background-tertiary, #f1f5f9);
+    }
+  }
+}

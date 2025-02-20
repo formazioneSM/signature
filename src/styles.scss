@@ -1,0 +1,85 @@
+@use 'variables.scss';
+@use './assets/fonts.scss';
+@use './assets/phosphor-icons.scss';
+body,html{
+    font-family: Inter;
+    font-size: var(--font-size-base);
+    width: 100svw;
+    height: 100svh;
+    margin: 0;
+    overflow: hidden;
+}
+button{
+    font-family: Inter;
+    font-size: var(--font-size-button);
+}
+.formLine{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+/* You can add global styles to this file, and also import other style files */
+:root{
+    //FOREGROUND
+    --foreground-primary: var(--gray-900);
+    --foreground-secondary: var(--gray-700);
+    --foreground-tertiary: var(--gray-600);
+    --foreground-disabled: var(--gray-500);
+    --foreground-placeholder: var(--gray-500);
+    //FOREGROUND-BRAND
+    --foreground-brand-primary: var(--blue-900);
+    --foreground-brand-secondary: var(--blue-700);
+    //FOREGROUND-ERROR
+    --foreground-error-primary: var(--error-600);
+    --foreground-error-secondary: var(--error-500);
+    //FOREGROUND-SUCCESS
+    --foreground-success-primary: var(--success-600);
+    --foreground-success-secondary: var(--success-500);
+    //FOREGROUND-WARNING
+    --foreground-warning-primary: var(--warning-600);
+    --foreground-warning-secondary: var(--warning-500);
+    //BACKGROUND
+    --background-primary: var(--white);
+    --background-secondary: var(--gray-50);
+    --background-tertiary: var(--gray-100);
+    --background-active: var(--gray-50);
+    --background-disabled: var(--gray-100);
+    //BACKGROUND-BRAND
+    --background-brand-primary: var(--blue-50);
+    --background-brand-secondary: var(--blue-100);
+    //BACKGROUND-ERROR
+    --background-error-primary: var(--error-50);
+    --background-error-secondary: var(--error-100);
+    //BACKGROUND-SUCCESS
+    --background-success-primary: var(--success-50);
+    --background-success-secondary: var(--success-100);
+    //BACKGROUND-WARNING
+    --background-warning-primary: var(--warning-50);
+    --background-warning-secondary: var(--warning-100);
+    //BORDER
+    --border-primary:var(--gray-100);
+    --border-secondary:var(--gray-200);
+    --border-tertiary:var(--gray-300);
+    --border-disabled:var(--gray-300);
+    --border-brand:var(--blue-500);
+    --border-error:var(--error-500);
+    //INTERACTION 
+    --interaction-primary-default:var(--blue-600);
+    --interaction-primary-hover:var(--blue-700);
+    --interaction-primary-active:var(--blue-800);
+    --interaction-primary-selected:var(--blue-700);
+    --interaction-secondary-default:var(--blue-50);
+    --interaction-secondary-hover:var(--blue-100);
+    --interaction-secondary-active:var(--blue-300);
+    --interaction-secondary-selected:var(--blue-100);
+    --interaction-neutral-default:var(--gray-700);
+    --interaction-neutral-hover:var(--gray-800);
+    --interaction-neutral-active:var(--gray-950);
+    --interaction-neutral-selected:var(--gray-800);
+    //INTERCTION DESTRUCTIVE
+    --interaction-destructive-default:var(--error-700);
+    --interaction-destructive-hover:var(--error-600);
+    --interaction-desctructive-active:var(--error-600);
+    --interaction-desctructive-selected:var(--error-600);
+}

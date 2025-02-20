@@ -1,0 +1,53 @@
+:host{
+.radioContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  
+  label {
+    color: var(--foreground-primary, #0f172a);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.035px;
+  }
+  input {
+    cursor: pointer;
+    appearance: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--background-primary, #ffffff);
+    border: 1px solid var(--border-primary, #cbd5e1);
+    transition: 0.2s all linear;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+  }
+
+  input:checked {
+    background: var(--interaction-primary-default, #006ccb);
+    border: 6px solid var(--background-brand-primray, #f0f7ff);
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+    border: 1px solid var(--border-disabled, #f1f5f9);
+    background: var(--background-disabled, #e2e8f0);
+  }
+
+  input:hover{
+    // background: var(--background-primary, #ffffff);
+    outline: 1px solid var(--border-brand, #0C8CED);
+  }
+  input:focus {
+    box-shadow: 0px 0px 0px 3px var(--blue-300, #7CC4FE);
+    outline: none;
+  }
+
+  
+}
+}

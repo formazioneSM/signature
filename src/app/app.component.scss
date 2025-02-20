@@ -1,0 +1,90 @@
+.sub-brand .name-app {
+  font-size: 30px;
+  font-weight: 900;
+  color: #000;
+}
+
+.sub-brand .name-app:after {
+  position: relative;
+  content: ".";
+  font-size: 54px;
+  font-weight: 900;
+  color: #005fb6;
+  font-family: "Hindi Madurai";
+}
+.container {
+  display: flex;
+  height: 100svh;
+  section {
+    flex: 1;
+    padding: 20px;
+    height: 100svh;
+    box-sizing: border-box;
+    &:last-of-type {
+      background: var(--interaction-primary-default, #006ccb);
+      color: var(--background-primary, #cbd5e1);
+      .sizing {
+        cursor: pointer;
+        width: 100%;
+        height: 50px;
+        display: none;
+      }
+    }
+    &:first-of-type {
+      display: grid;
+      grid-template-rows: 100px 1fr 80px;
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    section {
+      height: 100svh;
+      width: 100svw;
+
+      &:last-of-type {
+        transition: top .3s ease-in-out;
+        position: absolute;
+        height: 100svh;
+        top: 100svh;
+        .sizing {
+          display: flex;
+          position: absolute;
+          top: -30px;
+          padding: 5px;
+          box-sizing: border-box;
+          left: 0;
+          justify-content: center;
+          fill: white;
+          border-top-left-radius: 30px;
+          border-top-right-radius: 30px;
+          background: var(--interaction-primary-default, #006ccb);
+          svg{
+            rotate: -180deg;
+          }
+          path{
+            fill: white;
+          }
+
+        }
+        &:has(.active){
+          top: 30px;
+          .sizing{
+            svg{
+              rotate: 0deg;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

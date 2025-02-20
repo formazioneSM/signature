@@ -1,0 +1,27 @@
+@if(checked() === undefined || checked() === null){
+    <div class="my-checkbox"  >
+        <div class="indeterminate" (click)="onClickIndeterminate($event)" [class.disabled]="disabled()">
+            <div></div>
+        </div>
+        @if(label()){
+            <label [class.disabled]="disabled()" (click)="onClickIndeterminate($event)" [style]="labelStyles() ?? {}"  class="my-checkbox__label">{{label()}}</label>
+        }
+    </div>
+}@else {
+    <div class="my-checkbox" [class.disabled]="disabled()" (click)="onClickCheckbox($event) " >
+        <input
+        
+        onmousedown="event.preventDefault()"
+          [disabled]="disabled()"
+          [checked]="checked()"
+          type="checkbox"
+          id="my-checkbox"
+          class="my-checkbox__input"
+          value="Some Value"
+          #check
+        />
+        @if(label()){
+        <label [style]="labelStyles() ?? {}" [for]="check.id" class="my-checkbox__label">{{label()}}</label>
+        }
+      </div>
+}

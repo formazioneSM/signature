@@ -1,0 +1,96 @@
+:root{
+    //TYPOGRAFY
+    --font-size-base: 14px;
+    --font-size-medium: 16px;
+    --font-size-subtitle-base: 14px;
+    --font-size-subtitle-medium: 16px;
+    --font-size-h1: 96px;
+    --font-size-h2: 60px;
+    --font-size-h3: 48px;
+    --font-size-h4: 34px;
+    --font-size-h5: 24px;
+    --font-size-h6: 20px;
+    --font-size-button: 14px;
+    --font-size-caption: 12px;
+    --font-size-overline: 10px;
+    --white: #ffffff;
+    --black: #000000;
+    //GRAY
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A2B8;
+    --gray-500: #64738B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
+    --gray-950: #020617;
+    //BLUE
+    --blue-50: #EFF6FF;
+    --blue-100: #DBE9FE;
+    --blue-200: #BFDBFE;
+    --blue-300: #9DCAFD;
+    --blue-400: #60A5FA;
+    --blue-500: #3C82F6;
+    --blue-600: #2463EB;
+    --blue-700: #1C4ED8;
+    --blue-800: #1D40AE;
+    --blue-900: #1F3A8A;
+    --blue-950: #172554;
+    //GRAPE
+    --grape-50: #F5F3FF;
+    --grape-100: #EDE9FE;
+    --grape-200: #DDD6FE;
+    --grape-300: #C3B6FD;
+    --grape-400: #A68BFA;
+    --grape-500: #8B5CF6;
+    --grape-600: #7C3AED;
+    --grape-700: #6D28D9;
+    --grape-800: #5B21B6;
+    --grape-900: #4C1D95;
+    --grape-950: #2E1065;
+    //ERROR 
+    --error-50: #FEF3F2;
+    --error-100: #FEE4E2;
+    --error-200: #FEDDCA;
+    --error-300: #FDA29B;
+    --error-400: #F97066;
+    --error-500: #F04438;
+    --error-600: #D92D20;
+    --error-700: #B42318;
+    --error-800: #912018;
+    --error-900: #7A271A;
+    --error-950: #55160C;
+    //WARNING 
+    --warning-50: #FFFAEA;
+    --warning-100: #FEF1C6;
+    --warning-200: #FEDF88;
+    --warning-300: #FFC84B;
+    --warning-400: #FDB022;
+    --warning-500: #F79008;
+    --warning-600: #DC6903;
+    --warning-700: #B54707;
+    --warning-800: #93370E;
+    --warning-900: #7A2E0D;
+    --warning-950: #4E1D09;
+    //SUCCESS 
+    --success-50: #ECFEF3;
+    --success-100: #DCFAE6;
+    --success-200: #A9EFC5;
+    --success-300: #75E1A7;
+    --success-400: #46CD89;
+    --success-500: #19B26B;
+    --success-600: #079455;
+    --success-700: #047647;
+    --success-800: #065D3A;
+    --success-900: #084D31;
+    --success-950: #053321;
+
+    //BORDER RADIUS
+    --border-radius-xs:4px;
+    --border-radius-sm:8px;
+    --border-radius-md:12px;
+    --border-radius-lg:20px;
+}

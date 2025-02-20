@@ -1,0 +1,248 @@
+<div class="wrapper" >
+  @if(label()){
+  <label [for]="select.id" [style]="labelStyles() ?? {}">
+    {{ label() }}
+  </label>
+  }
+  <button
+    #hiddenSelect
+    style="opacity: 0; position: fixed"
+    (keyup.enter)="_select()?.nativeElement.focus()"
+  ></button>
+  <button
+    [disabled]="disabled()"
+    class="select"
+    #select
+    (focus)="setOptionsPosition(select, $event)"
+    (keyup.enter)="handleEnterKeyup(select)"
+    (keyup.arrowdown)="navigateSelectedOption(true)"
+    (keyup.arrowup)="navigateSelectedOption()"
+  >
+    <ng-container>
+      @if(multiple() && ((selectedValue()?.length)! === 0 || selectedValue() ===
+      null)){
+      <div class="option" style="width: 100%; padding-left: 0">
+        <svg
+          width="17"
+          height="16"
+          viewBox="0 0 17 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="Plus">
+            <path
+              id="Vector"
+              d="M14.5 8C14.5 8.13261 14.4473 8.25979 14.3536 8.35355C14.2598 8.44732 14.1326 8.5 14 8.5H9V13.5C9 13.6326 8.94732 13.7598 8.85355 13.8536C8.75979 13.9473 8.63261 14 8.5 14C8.36739 14 8.24021 13.9473 8.14645 13.8536C8.05268 13.7598 8 13.6326 8 13.5V8.5H3C2.86739 8.5 2.74021 8.44732 2.64645 8.35355C2.55268 8.25979 2.5 8.13261 2.5 8C2.5 7.86739 2.55268 7.74021 2.64645 7.64645C2.74021 7.55268 2.86739 7.5 3 7.5H8V2.5C8 2.36739 8.05268 2.24021 8.14645 2.14645C8.24021 2.05268 8.36739 2 8.5 2C8.63261 2 8.75979 2.05268 8.85355 2.14645C8.94732 2.24021 9 2.36739 9 2.5V7.5H14C14.1326 7.5 14.2598 7.55268 14.3536 7.64645C14.4473 7.74021 14.5 7.86739 14.5 8Z"
+              fill="#475569"
+            />
+          </g>
+        </svg>
+        <div
+          style="flex: 1; color: var(--foreground-primary, #0f172a)"
+          class="defaultValue"
+        >
+          <input
+            type="text"
+            [style.pointerEvents]="searchble() ? 'all' : 'none'"
+            (click)="handleInputFocus($event)"
+            (input)="filterElements($event)"
+            placeholder="Aggiungi un elemento"
+          />
+        </div>
+      </div>
+      }@else { @if(!multiple()){
+      <div
+        class="selectedValue"
+        [class.placeholder]="
+          selectedValue() === null && !multiple()
+        "
+      >
+        <input
+          type="text"
+          [style.pointerEvents]="searchble() ? 'all' : 'none'"
+          (click)="handleInputFocus($event)"
+          (input)="filterElements($event)"
+          #inputSingleValue
+          placeholder="seleziona elemento"
+          [value]="selectedValue()"
+        />
+        <!-- {{ selectedValue() }} -->
+      </div>
+      }@else{
+      <ng-scrollbar
+        visibility="hover"
+        orientation="horizontal"
+        appearance="compact"
+        style="
+          max-width: var(--maxWidth);
+          max-height: none;
+          white-space: nowrap;
+        "
+      >
+        <div class="container-multiple-values">
+          @for (value of selectedValue(); track customTrack($index, value)) {
+          <div class="selectedValue-multiple">
+            <span>{{ getOptionName(value) }}</span>
+            <svg
+              (click)="selectValue(value, select)"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="X">
+                <path
+                  id="Vector"
+                  d="M12.765 12.235C12.8019 12.2693 12.8314 12.3107 12.8519 12.3567C12.8724 12.4027 12.8835 12.4524 12.8843 12.5027C12.8852 12.5531 12.876 12.6031 12.8571 12.6498C12.8382 12.6965 12.8102 12.7389 12.7746 12.7745C12.739 12.8101 12.6965 12.8382 12.6498 12.8571C12.6032 12.8759 12.5531 12.8852 12.5028 12.8843C12.4524 12.8834 12.4028 12.8724 12.3568 12.8519C12.3108 12.8314 12.2694 12.8018 12.235 12.765L8.00005 8.53062L3.76505 12.765C3.69396 12.8312 3.59993 12.8673 3.50278 12.8656C3.40563 12.8639 3.31294 12.8245 3.24423 12.7558C3.17553 12.6871 3.13617 12.5944 3.13446 12.4973C3.13274 12.4001 3.16881 12.3061 3.23505 12.235L7.46942 8L3.23505 3.765C3.16881 3.69391 3.13274 3.59989 3.13446 3.50274C3.13617 3.40559 3.17553 3.3129 3.24423 3.24419C3.31294 3.17548 3.40563 3.13613 3.50278 3.13441C3.59993 3.1327 3.69396 3.16876 3.76505 3.235L8.00005 7.46937L12.235 3.235C12.3061 3.16876 12.4002 3.1327 12.4973 3.13441C12.5945 3.13613 12.6872 3.17548 12.7559 3.24419C12.8246 3.3129 12.8639 3.40559 12.8656 3.50274C12.8673 3.59989 12.8313 3.69391 12.765 3.765L8.53067 8L12.765 12.235Z"
+                  fill="#0F172A"
+                />
+              </g>
+            </svg>
+          </div>
+          }
+        </div>
+      </ng-scrollbar>
+
+      <div style="display: flex; align-items: center">
+        <svg
+          width="17"
+          height="16"
+          viewBox="0 0 17 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="Plus">
+            <path
+              id="Vector"
+              d="M14.5 8C14.5 8.13261 14.4473 8.25979 14.3536 8.35355C14.2598 8.44732 14.1326 8.5 14 8.5H9V13.5C9 13.6326 8.94732 13.7598 8.85355 13.8536C8.75979 13.9473 8.63261 14 8.5 14C8.36739 14 8.24021 13.9473 8.14645 13.8536C8.05268 13.7598 8 13.6326 8 13.5V8.5H3C2.86739 8.5 2.74021 8.44732 2.64645 8.35355C2.55268 8.25979 2.5 8.13261 2.5 8C2.5 7.86739 2.55268 7.74021 2.64645 7.64645C2.74021 7.55268 2.86739 7.5 3 7.5H8V2.5C8 2.36739 8.05268 2.24021 8.14645 2.14645C8.24021 2.05268 8.36739 2 8.5 2C8.63261 2 8.75979 2.05268 8.85355 2.14645C8.94732 2.24021 9 2.36739 9 2.5V7.5H14C14.1326 7.5 14.2598 7.55268 14.3536 7.64645C14.4473 7.74021 14.5 7.86739 14.5 8Z"
+              fill="#475569"
+            />
+          </g>
+        </svg>
+        <div
+          style="
+            flex: 1;
+            min-width: 10rem;
+            color: var(--foreground-primary, #0f172a);
+          "
+          class="defaultValue"
+        >
+          <input
+            type="text"
+            [style.pointerEvents]="searchble() ? 'all' : 'none'"
+            (click)="handleInputFocus($event)"
+            (input)="filterElements($event)"
+            #searchInput
+            placeholder="Aggiungi un elemento"
+          />
+        </div>
+      </div>
+      } }
+    </ng-container>
+    <!--INIZIO CONTENITORE OPTIONS-->
+    <div
+      class="options"
+      #optionsElement
+      [style.border]="
+        multiple() ? 'none' : '1px solid var(--border-primary, #cbd5e1)'
+      "
+    >
+      <ng-scrollbar style="width: 100%">
+        @if(!multiple()){
+        <div
+          class="option placeholder"
+          (click)="
+            selectValue(
+              null,
+              select
+            )
+          "
+        >
+          <div style="flex: 1">seleziona elemento</div>
+        </div>
+        } @for(option of filteredOptions().length > 0 ? filteredOptions() :
+        internalOptions();track customTrack($index, option)){ @if(option.category){
+        <div class="option">
+          <div class="category">{{ option.category }}</div>
+        </div>
+        }
+        <div
+          class="option"
+          (click)="multiple() ? null : selectValue(option, select, $event)"
+          [style.background]="
+            option.selected ? 'var(--background-secondary)' : 'unset'
+          "
+          [style.borderBottom]="
+            option.last ? '1px solid var(--border-primary, #CBD5E1)' : 'unset'
+          "
+        >
+          @if(multiple() && !option.noResultOption){
+          <lieveeto-checkbox
+            [checked]="
+              option.selected !== undefined && option.selected === true
+            "
+            (checkedChange)="selectValue(option, select)"
+          ></lieveeto-checkbox>
+          }
+          <!--SE LA OPTION CONTIENE UN'IMMAGINE NELLA PROPRIETà "icon" LA MOSTRA-->
+          @if(option.icon){
+          <img class="option-icon" [src]="option.icon" alt="option-icon" />
+          }
+          <div style="flex: 1" [style.marginLeft]="multiple() ? '10px' : ''">
+            {{ option.name }}
+          </div>
+          <!--INIZIO SPUNTA PER L'ELEMENTO SELEZIONATO-->
+          @if(option.selected){
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="Check">
+              <path
+                id="Vector"
+                d="M14.265 4.76498L6.26505 12.765C6.19473 12.8352 6.09942 12.8747 6.00005 12.8747C5.90067 12.8747 5.80536 12.8352 5.73505 12.765L2.23505 9.26499C2.16881 9.1939 2.13274 9.09987 2.13446 9.00272C2.13617 8.90557 2.17553 8.81288 2.24423 8.74417C2.31294 8.67547 2.40563 8.63611 2.50278 8.6344C2.59993 8.63268 2.69396 8.66874 2.76505 8.73498L6.00005 11.9694L13.735 4.23498C13.8061 4.16874 13.9002 4.13268 13.9973 4.1344C14.0945 4.13611 14.1872 4.17547 14.2559 4.24417C14.3246 4.31288 14.3639 4.40557 14.3656 4.50272C14.3673 4.59987 14.3313 4.6939 14.265 4.76498Z"
+                fill="#064A87"
+              />
+            </g>
+          </svg>
+          }
+          <!--FINE SPUNTA PER L'ELEMENTO SELEZIONATO-->
+        </div>
+        } @empty {
+        <div class="option">nessun elemento disponibile</div>
+        }
+      </ng-scrollbar>
+    </div>
+    <!--FINE CONTENITORE OPTIONS-->
+    <div
+      style="display: flex; align-items: center; margin-left: auto; gap: 5px"
+    >
+      @if(checkIsArray(selectedValue()) && selectedValue() !== null && (selectedValue()?.length)! > 0){
+      <div class="counter-selected-values">
+        {{ selectedValue()?.length }}
+      </div>
+      }
+      <!--INIZIO FRECCIA DROPDOWN-->
+      <svg
+        width="25"
+        height="24"
+        viewBox="0 0 25 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="CaretDown">
+          <path
+            id="Vector"
+            d="M20.7806 9.53063L13.2806 17.0306C13.211 17.1004 13.1283 17.1557 13.0372 17.1934C12.9462 17.2312 12.8486 17.2506 12.75 17.2506C12.6514 17.2506 12.5538 17.2312 12.4628 17.1934C12.3717 17.1557 12.289 17.1004 12.2194 17.0306L4.71937 9.53063C4.57864 9.3899 4.49958 9.19902 4.49958 9C4.49958 8.80098 4.57864 8.61011 4.71937 8.46937C4.8601 8.32864 5.05097 8.24958 5.25 8.24958C5.44902 8.24958 5.63989 8.32864 5.78062 8.46937L12.75 15.4397L19.7194 8.46937C19.7891 8.39969 19.8718 8.34442 19.9628 8.3067C20.0539 8.26899 20.1515 8.24958 20.25 8.24958C20.3485 8.24958 20.4461 8.26899 20.5372 8.3067C20.6282 8.34442 20.7109 8.39969 20.7806 8.46937C20.8503 8.53906 20.9056 8.62178 20.9433 8.71283C20.981 8.80387 21.0004 8.90145 21.0004 9C21.0004 9.09855 20.981 9.19613 20.9433 9.28717C20.9056 9.37822 20.8503 9.46094 20.7806 9.53063Z"
+            fill="#0F172A"
+          />
+        </g>
+      </svg>
+      <!--FINE FRECCIA DROPDOWN-->
+    </div>
+  </button>
+</div>

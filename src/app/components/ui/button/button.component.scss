@@ -1,0 +1,154 @@
+.btn {
+  cursor: pointer;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--border-radius-sm);
+  color: var(--foreground-primary, #0F172A);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.035px;
+  border: none;
+
+  
+}
+
+.default-primary{
+  background: var(--interaction-primary-default, #006ccb);
+  color: var(--interaction-secondary-default, #f0f7ff);
+  &:hover {
+    background: var(--interaction-primary-hover, #1c4ed8);
+  }
+  &:active {
+    background: var(--interaction-primary-active, #1d40ae) !important;
+  }
+  &:focus {
+    background: var(--interaction-primary-selected, #1c4ed8);
+  }
+  &:disabled {
+    background: var(--background-disabled, #f1f5f9);
+    color: var(--foreground-disabled, #64738b);
+    pointer-events: none;
+  }
+}
+.default-secondary{
+  background: var(--background-primary, #CBD5E1);
+  border: 1px solid var(--border-primary, #CBD5E1);
+  color: var(--foreground-primary, #0F172A);
+  &:hover {
+    background: var(--background-secondary, #F8FAFC);
+    border: 1px solid var(--border-secondary, #E2E8F0);
+  }
+  &:active {
+    border: 1px solid var(--border-secondary, #E2E8F0);
+    background: var(--background-active, #F1F5F9) !important;
+  }
+  &:focus {
+    border: 1px solid var(--border-secondary, #E2E8F0);
+    background: var(--background-secondary, #F8FAFC);
+  }
+  &:disabled {
+    border: 1px solid var(--border-secondary, #E2E8F0);
+    background: var(--background-disabled, #f1f5f9);
+    color: var(--foreground-disabled, #64738b);
+    pointer-events: none;
+  }
+}
+.default-tertiary{
+  background: none;
+  border: none;
+  color: var(--foreground-brand-primary, #064A87);
+  text-decoration-line: underline;
+  letter-spacing: 0.035px;
+  text-underline-position: from-font;
+  // &:hover {
+  // }
+  // &:active {
+  //   border: 1px solid var(--border-secondary, #E2E8F0);
+  //   background: var(--background-active, #F1F5F9) !important;
+  // }
+  // &:focus {
+  //   border: 1px solid var(--border-secondary, #E2E8F0);
+  //   background: var(--background-secondary, #F8FAFC);
+  // }
+  &:disabled {
+    opacity: .6;
+    pointer-events: none;
+    color: var(--foreground-disabled, #64738b);
+  }
+}
+.destructive-primary{
+  background: var(--interaction-destructive-default, #B42318);
+  color: var(--interaction-secondary-default, #f0f7ff);
+  &:hover {
+    background: var(--interaction-destructive-hover, #D92D20);
+  }
+  &:active {
+    background: var(--interaction-destructive-active, #D92D20) !important;
+  }
+  &:focus {
+    background: var(--interaction-destructive-selected, #D92D20);
+  }
+  &:disabled {
+    background: var(--background-disabled, #f1f5f9);
+    pointer-events: none;
+    color: var(--foreground-disabled, #64738b);
+  }
+}
+.destructive-secondary{
+  background: var(--background-error-primary, #FEF3F2);
+  color: var(--interaction-destructive-default, #B42318);
+  &:hover {
+    background: var(--background-error-secondary, #FEE4E2);
+  }
+  &:active {
+    background: var(--background-error-secondary, #FEE4E2) !important;
+  }
+  &:focus {
+    background: var(--background-error-secondary, #FEE4E2);
+  }
+  &:disabled {
+    opacity: .6;
+    background: var(--background-error-secondary, #FEE4E2);
+    pointer-events: none;
+    color: var(--foreground-disabled, #64738b);
+  }
+}
+.destructive-tertiary{
+  background: none;
+  color: var(--interaction-destructive-default, #B42318);
+  // &:hover {
+  //   background: var(--background-error-secondary, #FEE4E2);
+  // }
+  // &:active {
+  //   background: var(--interaction-destructive-active, #D92D20) !important;
+  // }
+  // &:focus {
+  //   background: var(--interaction-destructive-active, #D92D20) !important;
+  // }
+  &:disabled {
+    opacity: .6;
+    color: var(--foreground-disabled, #64738b);
+    pointer-events: none;
+  }
+}
+.medium{
+  height: 40px;
+  padding: 8px 12px;
+  font-size: var(--font-size-button);
+}
+.small{
+  height: 25px;
+  padding: 4px 8px;
+  font-size: var(--font-size-button);
+}
+.large{
+  height: 56px;
+  padding: 12px 24px;
+  font-size: 20px; //non rientra tra le variabili disponibili per il font size button
+}

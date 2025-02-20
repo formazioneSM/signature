@@ -1,0 +1,20 @@
+<div style="display: flex;flex-direction: column;">
+    @if(label()){
+        <label [for]="input.id" [style]="labelStyles()??{}">
+            {{label()}}
+        </label>
+    }
+    <input
+      #input
+      [placeholder]="placeholder()"
+      [type]="type()"
+      [disabled]="disabled()"
+      [value]="value()"
+      (input)="handleChange($event)"
+    />
+    @if(helperText()){
+        <div class="helperText">
+            {{helperText()}}
+        </div>
+    }
+</div>
