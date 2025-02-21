@@ -160,11 +160,76 @@ export class SelectComponent implements ControlValueAccessor {
     });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this._optionsContainer()?.nativeElement.addEventListener('touchstart', (e: Event) => {
+      this.handleTouch(e as TouchEvent);
+    }, {passive: false});
+  }
 
   //****************************** END LIFECYCLE **************************************/
 
   //****************************** START METHODS *************************************/
+  protected handleMultipleOptionTouch(event: TouchEvent, option: Option) {
+  // Previeni il comportamento di default
+  event.preventDefault();
+  event.stopPropagation();
+
+  // Se l'opzione non è selezionabile, esci
+  if (option.noResultOption) {
+    return;
+  }
+
+  // Simula il click sulla checkbox
+  if (!this.disabled()) {
+    this.selectValue(option, this._select()?.nativeElement, event);
+    
+    // Mantieni il focus sulla select per permettere selezioni multiple
+    this._select()?.nativeElement.focus();
+    
+    // Riposiziona il container delle opzioni
+    setTimeout(() => {
+      this.setOptionsPosition(this._select()?.nativeElement);
+    }, 10);
+  }
+}
+
+protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
+  // Gestione per dispositivi non touch
+  if (!this.disabled() && !option.noResultOption) {
+    this.selectValue(option, this._select()?.nativeElement, event);
+  }
+}
+  protected handleTouch(event: TouchEvent) {
+    // Previeni il comportamento di default del browser
+    event.preventDefault();
+    
+    // Ottieni le coordinate del touch
+    const touch = event.touches[0];
+    
+    // Trova l'elemento option più vicino al punto di touch
+    const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement;
+    
+    // Verifica se l'elemento toccato è un'opzione della select
+    if (element?.closest('.option')) {
+      const optionElement = element.closest('.option') as HTMLElement;
+      
+      // Estrai i dati dell'opzione
+      const optionName = optionElement.querySelector('div')?.textContent?.trim();
+      const option = this.internalOptions().find(opt => opt.name === optionName);
+      
+      if (option) {
+        // Simula la selezione dell'opzione
+        this.selectValue(
+          option,
+          this._select()?.nativeElement,
+          event
+        );
+      }
+    }
+    
+    // Aggiorna la posizione del container delle opzioni
+    this.setOptionsPosition(this._select()?.nativeElement);
+  }
   /**
    * @name customTrack
    * @param {number} index
@@ -331,7 +396,10 @@ export class SelectComponent implements ControlValueAccessor {
     select: HTMLButtonElement,
     event?: Event
   ) {
-
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     if (option === null) {
       this.internalOptions.update((options: Option[]) =>
         options.map((o: Option) => ({
@@ -342,7 +410,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.filteredOptions.set([]);
       this.selection.emit(option);
       this.notifyChange();
-      select.blur();
+      this._select()?.nativeElement.blur();
       return;
     }
     if (!this.multiple()) {

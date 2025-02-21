@@ -14,6 +14,10 @@
     class="select"
     #select
     (focus)="setOptionsPosition(select, $event)"
+    (touchstart)="setOptionsPosition(select, $event) "
+    (touchend)="setOptionsPosition(select, $event)"
+    
+    (click)="handleInputFocus($event)"
     (keyup.enter)="handleEnterKeyup(select)"
     (keyup.arrowdown)="navigateSelectedOption(true)"
     (keyup.arrowup)="navigateSelectedOption()"
@@ -21,7 +25,7 @@
     <ng-container>
       @if(multiple() && ((selectedValue()?.length)! === 0 || selectedValue() ===
       null)){
-      <div class="option" style="width: 100%; padding-left: 0">
+      <div class="option" style="width: 100%; padding-left: 0" (click) ="handleInputFocus($event)">
         <svg
           width="17"
           height="16"
@@ -38,16 +42,27 @@
           </g>
         </svg>
         <div
-          style="flex: 1; color: var(--foreground-primary, #0f172a)"
+          style="flex: 1; color: var(--foreground-primary, #0f172a); white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"
           class="defaultValue"
+     
         >
+        @if(searchble()){
+
           <input
             type="text"
-            [style.pointerEvents]="searchble() ? 'all' : 'none'"
             (click)="handleInputFocus($event)"
             (input)="filterElements($event)"
             placeholder="Aggiungi un elemento"
           />
+        }@else{
+          <span [class.placeholder]="
+          selectedValue() === null && !multiple()
+        " (click)="handleInputFocus($event)"
+          (input)="filterElements($event)"
+          style="white-space: nowrap;">
+          {{selectedValue()??'Aggiungi un elemento'}}
+        </span>
+        }
         </div>
       </div>
       }@else { @if(!multiple()){
@@ -56,16 +71,24 @@
         [class.placeholder]="
           selectedValue() === null && !multiple()
         "
+    
       >
+      @if(searchble()){
+
         <input
           type="text"
-          [style.pointerEvents]="searchble() ? 'all' : 'none'"
+          (touchstart)="handleInputFocus($event)"
           (click)="handleInputFocus($event)"
           (input)="filterElements($event)"
           #inputSingleValue
           placeholder="seleziona elemento"
           [value]="selectedValue()"
         />
+      }@else{
+        <span [class.placeholder]="
+        selectedValue() === null && !multiple()
+      " style="white-space: nowrap;">{{selectedValue()??'seleziona elemento'}}</span>
+      }
         <!-- {{ selectedValue() }} -->
       </div>
       }@else{
@@ -130,7 +153,6 @@
         >
           <input
             type="text"
-            [style.pointerEvents]="searchble() ? 'all' : 'none'"
             (click)="handleInputFocus($event)"
             (input)="filterElements($event)"
             #searchInput
@@ -152,14 +174,13 @@
         @if(!multiple()){
         <div
           class="option placeholder"
-          (click)="
+        >
+          <div (mousedown)="
             selectValue(
               null,
               select
             )
-          "
-        >
-          <div style="flex: 1">seleziona elemento</div>
+          " style="flex: 1">seleziona elemento</div>
         </div>
         } @for(option of filteredOptions().length > 0 ? filteredOptions() :
         internalOptions();track customTrack($index, option)){ @if(option.category){
@@ -169,7 +190,8 @@
         }
         <div
           class="option"
-          (click)="multiple() ? null : selectValue(option, select, $event)"
+          (touchstart)="handleMultipleOptionTouch($event, option)"
+          (mousedown)="multiple() ? null : selectValue(option, select, $event)"
           [style.background]="
             option.selected ? 'var(--background-secondary)' : 'unset'
           "
@@ -219,7 +241,8 @@
     </div>
     <!--FINE CONTENITORE OPTIONS-->
     <div
-      style="display: flex; align-items: center; margin-left: auto; gap: 5px"
+
+      style="display: flex; align-items: center; margin-left: auto; gap: 5px; "  
     >
       @if(checkIsArray(selectedValue()) && selectedValue() !== null && (selectedValue()?.length)! > 0){
       <div class="counter-selected-values">
@@ -228,6 +251,7 @@
       }
       <!--INIZIO FRECCIA DROPDOWN-->
       <svg
+
         width="25"
         height="24"
         viewBox="0 0 25 24"
