@@ -172,15 +172,21 @@
     >
       <ng-scrollbar style="width: 100%">
         @if(!multiple()){
-        <div
-          class="option placeholder"
-        >
-          <div (mousedown)="
+        <div (touchstart)="
             selectValue(
               null,
               select
             )
-          " style="flex: 1">seleziona elemento</div>
+          "
+          (mousedown)="
+            selectValue(
+              null,
+              select
+            )
+          "
+          class="option placeholder"
+        >
+          <div  style="flex: 1">seleziona elemento</div>
         </div>
         } @for(option of filteredOptions().length > 0 ? filteredOptions() :
         internalOptions();track customTrack($index, option)){ @if(option.category){
@@ -191,7 +197,7 @@
         <div
           class="option"
           (touchstart)="handleMultipleOptionTouch($event, option)"
-          (mousedown)="multiple() ? null : selectValue(option, select, $event)"
+          (mousedown)="multiple() ? null : handleMultipleOptionSelect($event, option)"
           [style.background]="
             option.selected ? 'var(--background-secondary)' : 'unset'
           "

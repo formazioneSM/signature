@@ -9,6 +9,7 @@ body,html{
     margin: 0;
     position: relative;
     overflow: hidden;
+    -webkit-overflow-scrolling : touch !important;
 }
 button{
     font-family: Inter;

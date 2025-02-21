@@ -25,7 +25,9 @@ import { getRoles } from './services/roles.service';
 import { SignatureService } from './services/signature.service';
 import { Workplace } from './models/signature.model';
 import { ButtonComponent } from "./components/ui/button/button.component";
-
+document.ontouchmove = function(event){
+  event.preventDefault();
+}
 @Component({
   selector: 'app-root',
   imports: [

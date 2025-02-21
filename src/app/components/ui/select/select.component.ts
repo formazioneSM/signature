@@ -6,6 +6,7 @@ import {
   effect,
   ElementRef,
   forwardRef,
+  inject,
   input,
   linkedSignal,
   model,
@@ -17,6 +18,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgScrollbar, NgScrollbarModule } from 'ngx-scrollbar';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
+import { PlatformService } from '../../../services/platform.service';
 
 export interface Option {
   name: string;
@@ -76,6 +78,8 @@ export class SelectComponent implements ControlValueAccessor {
   private _scrollable = viewChild(NgScrollbar);
   private _hiddenSelect = viewChild<ElementRef<any>>('hiddenSelect');
   private searchInput = viewChild<ElementRef<any>>('searchInput');
+  private platformService = inject(PlatformService);
+  protected isSafariPlatform = this.platformService.isSafariOrIOS();
   private inputSingleValue =
     viewChild<ElementRef<HTMLInputElement>>('inputSingleValue');
   label = input<string | undefined>();
@@ -169,7 +173,7 @@ export class SelectComponent implements ControlValueAccessor {
   //****************************** END LIFECYCLE **************************************/
 
   //****************************** START METHODS *************************************/
-  protected handleMultipleOptionTouch(event: TouchEvent, option: Option) {
+  protected handleMultipleOptionTouch(event: Event, option: Option) {
   // Previeni il comportamento di default
   event.preventDefault();
   event.stopPropagation();
@@ -184,7 +188,7 @@ export class SelectComponent implements ControlValueAccessor {
     this.selectValue(option, this._select()?.nativeElement, event);
     
     // Mantieni il focus sulla select per permettere selezioni multiple
-    this._select()?.nativeElement.focus();
+    // this._select()?.nativeElement.focus();
     
     // Riposiziona il container delle opzioni
     setTimeout(() => {
@@ -239,7 +243,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
    */
   customTrack(index: number, option: Option | string) {
     return (
-      `${(option as Option)?.name ?? option}-${index}` +
+      `${index}` +
       `${Math.random() * index + 100}`
     );
   }
@@ -396,6 +400,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
     select: HTMLButtonElement,
     event?: Event
   ) {
+  
     if (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -410,7 +415,8 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       this.filteredOptions.set([]);
       this.selection.emit(option);
       this.notifyChange();
-      this._select()?.nativeElement.blur();
+      select.blur();
+      
       return;
     }
     if (!this.multiple()) {
@@ -510,8 +516,13 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
   }
 
   handleInputFocus(event: Event) {
+    // if(this.selectedValue() === null){
+    //   this._select()?.nativeElement.blur();
+    //   return
+    // }
     this._select()?.nativeElement.focus();
     (event.target as any).focus();
+    
   }
   /**
    * @name setOptionsPosition
