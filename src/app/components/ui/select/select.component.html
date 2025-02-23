@@ -172,18 +172,13 @@
     >
       <ng-scrollbar style="width: 100%">
         @if(!multiple()){
-        <div (touchstart)="
-            selectValue(
-              null,
-              select
-            )
-          "
-          (mousedown)="
-            selectValue(
-              null,
-              select
-            )
-          "
+        <div 
+        (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="onTouchEnd($event, null, select)"
+        (mousedown)="onMouseDown($event, null, select)"
+        (mouseup)="onMouseUp($event, null, select)"
+        (click)="onClick($event, null, select)"
           class="option placeholder"
         >
           <div  style="flex: 1">seleziona elemento</div>
@@ -196,8 +191,12 @@
         }
         <div
           class="option"
-          (touchstart)="handleMultipleOptionTouch($event, option)"
-          (mousedown)="multiple() ? null : handleMultipleOptionSelect($event, option)"
+          (touchstart)="onTouchStart($event)"
+          (touchmove)="onTouchMove($event)"
+          (touchend)="onTouchEnd($event, option, select)"
+          (mousedown)="onMouseDown($event, option, select)"
+          (mouseup)="onMouseUp($event, option, select)"
+          (click)="onClick($event, option, select)"
           [style.background]="
             option.selected ? 'var(--background-secondary)' : 'unset'
           "

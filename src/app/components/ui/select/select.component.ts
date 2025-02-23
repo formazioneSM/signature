@@ -6,6 +6,7 @@ import {
   effect,
   ElementRef,
   forwardRef,
+  HostListener,
   inject,
   input,
   linkedSignal,
@@ -72,6 +73,24 @@ const checkSpaceAboveBelow = (element: HTMLElement, minSpace = 0) => {
   ],
 })
 export class SelectComponent implements ControlValueAccessor {
+
+  // Aggiungi un handler globale per i click
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent) {
+    if (this.isOpened()) {
+      const selectElement = this._select()?.nativeElement;
+      const optionsElement = this._optionsContainer()?.nativeElement;
+      
+      // Verifica se il click è avvenuto fuori sia dalla select che dalle options
+      if (!selectElement?.contains(event.target) && 
+          !optionsElement?.contains(event.target)) {
+        this.isOpened.set(false);
+        if (this._select()?.nativeElement) {
+          this._select()?.nativeElement.blur();
+        }
+      }
+    }
+  }
   //************* START FIELDS ***************/
   private _optionsContainer = viewChild<ElementRef<any>>('optionsElement');
   protected _select = viewChild<ElementRef<any>>('select');
@@ -79,7 +98,7 @@ export class SelectComponent implements ControlValueAccessor {
   private _hiddenSelect = viewChild<ElementRef<any>>('hiddenSelect');
   private searchInput = viewChild<ElementRef<any>>('searchInput');
   private platformService = inject(PlatformService);
-  protected isSafariPlatform = this.platformService.isSafariOrIOS();
+  
   private inputSingleValue =
     viewChild<ElementRef<HTMLInputElement>>('inputSingleValue');
   label = input<string | undefined>();
@@ -117,6 +136,64 @@ export class SelectComponent implements ControlValueAccessor {
   });
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
+   private startY = 0;
+private startX = 0;
+ private moved = false;
+
+onTouchStart(event: TouchEvent) {
+  event.stopPropagation()
+  this.startY = event.touches[0].clientY;
+  this.startX = event.touches[0].clientX;
+  this.moved = false;
+}
+
+onTouchMove(event: TouchEvent) {
+  event.stopPropagation()
+  const diffY = Math.abs(event.touches[0].clientY - this.startY);
+  const diffX = Math.abs(event.touches[0].clientX - this.startX);
+  if (diffY > 10 || diffX > 10) { // Soglia per rilevare lo scroll
+    this.moved = true;
+  }
+}
+
+onTouchEnd(event: TouchEvent, option: any, select: any) {
+  if (!this.moved) {
+    this.selectValue(option, select); // Solo se non c'è stato scroll
+  }
+}
+
+onMouseDown(event: MouseEvent, option:any, select:any) {
+  
+    event.stopPropagation()
+  
+  this.startY = event.clientY;
+  this.startX = event.clientX;
+  this.moved = false;
+  if(this.platformService.isSafariMacOS()){
+    event.preventDefault();
+    this.selectValue(option, select, event)
+  }
+}
+onClick(event:MouseEvent, option:any, select:any){
+  if(this.platformService.isChromeDesktop()){
+    this.selectValue(option, select,event);
+  }
+}
+onMouseUp(event: MouseEvent, option: any, select: any) {
+  if(this.platformService.isSafariMacOS()){
+    return;
+  }
+  event.stopPropagation();
+  const diffY = Math.abs(event.clientY - this.startY);
+  const diffX = Math.abs(event.clientX - this.startX);
+  if (diffY < 5 && diffX < 5) { // Solo se è un click, non uno scroll
+    if(this.platformService.isChromeDesktop()){
+      return
+    }
+    this.selectValue(option, select);
+  }
+}
+
   //************* END FIELDS ***************/
 
   //****************************** START LIFECYCLE ***********************************/
@@ -203,6 +280,10 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
     this.selectValue(option, this._select()?.nativeElement, event);
   }
 }
+/**
+ * @name handleTouch
+ * @param {TouchEvent} event 
+ */
   protected handleTouch(event: TouchEvent) {
     // Previeni il comportamento di default del browser
     event.preventDefault();
@@ -390,7 +471,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
   }
   /**
    * @name selectValue
-   * @param {Option | string} option - option selezionata
+   * @param {Option | string | null} option - option selezionata
    * @param {HTMLButtonElement} select - elemento nativo che rappresenta la select
    * @param {Event=} event - evento di click
    * @description imposta il valore selezionato, emette l'evento con la option selezionata, scatena il blur alla select
@@ -459,7 +540,9 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
           this.selectedValue() as string;
       }
       //metto in focus il button nascosto per permettere di riaprire la select se si preme il tasto enter
-      this._hiddenSelect()?.nativeElement.focus();
+      requestAnimationFrame(() => {
+        this._hiddenSelect()?.nativeElement?.focus();
+      });
     } else {
       //se si tratta di una select multipla
       event?.stopPropagation();
