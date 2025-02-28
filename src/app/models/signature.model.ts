@@ -1,7 +1,7 @@
 export interface Signature {
     azienda: Azienda
     area: Area
-    indirizzo: Indirizzo | string
+    indirizzo: Indirizzo
     mobile: string
     version: Version
     interno: string

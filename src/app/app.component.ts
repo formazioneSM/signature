@@ -68,7 +68,7 @@ export class AppComponent {
           (this.signature().ruolo === null || this.signature().ruolo?.name === '')
     ) ||
     this.stepperService.step() === 3 && (
-      this.signature().indirizzo === '' || this.signature().indirizzo === null || (this.signature().indirizzo as Indirizzo)?.name === ''
+      (this.signature().indirizzo as any) === '' || this.signature().indirizzo === null || (this.signature().indirizzo as Indirizzo)?.name === ''
     )
   })
   copySignature = () => {
