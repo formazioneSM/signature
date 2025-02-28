@@ -1,16 +1,20 @@
 export interface Signature {
     azienda: Azienda
     area: Area
-    indirizzo: Indirizzo
+    indirizzo: Indirizzo | string
     mobile: string
     version: Version
     interno: string
-    nomecognome: string
+    nome: string
+    cognome: string
     disclaimer: boolean
-    ruolo: any
+    ruolo: Role
     avvisoambientale: boolean
   }
-  
+  export interface Role{
+    name: string,
+    value:any
+  }
   export interface Version {
     name: string,
     logo:string

@@ -18,10 +18,11 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgScrollbar, NgScrollbarModule } from 'ngx-scrollbar';
-import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { PlatformService } from '../../../services/platform.service';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
 
 export interface Option {
+  id:number,
   name: string;
   value: any;
   selected?: boolean;
@@ -73,17 +74,18 @@ const checkSpaceAboveBelow = (element: HTMLElement, minSpace = 0) => {
   ],
 })
 export class SelectComponent implements ControlValueAccessor {
-
   // Aggiungi un handler globale per i click
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
     if (this.isOpened()) {
       const selectElement = this._select()?.nativeElement;
       const optionsElement = this._optionsContainer()?.nativeElement;
-      
+
       // Verifica se il click è avvenuto fuori sia dalla select che dalle options
-      if (!selectElement?.contains(event.target) && 
-          !optionsElement?.contains(event.target)) {
+      if (
+        !selectElement?.contains(event.target) &&
+        !optionsElement?.contains(event.target)
+      ) {
         this.isOpened.set(false);
         if (this._select()?.nativeElement) {
           this._select()?.nativeElement.blur();
@@ -98,16 +100,19 @@ export class SelectComponent implements ControlValueAccessor {
   private _hiddenSelect = viewChild<ElementRef<any>>('hiddenSelect');
   private searchInput = viewChild<ElementRef<any>>('searchInput');
   private platformService = inject(PlatformService);
-  
+  private selectedOptions:Option[] = []
   private inputSingleValue =
     viewChild<ElementRef<HTMLInputElement>>('inputSingleValue');
   label = input<string | undefined>();
-  labelStyles= input<{[key:string]: any}>()
+  multiple = input(false, { transform: booleanAttribute });
+  placeholder = input<string | undefined>(
+    this.multiple() ? 'Aggiungi elemento' : 'Seleziona elemento'
+  );
+  labelStyles = input<{ [key: string]: any }>();
   searchble = input(false, { transform: booleanAttribute });
   withCustomValue = input(false, { transform: booleanAttribute });
   isOpened = model<boolean | null>(null);
   options = model<Option[]>([]);
-  multiple = input(false, { transform: booleanAttribute });
   disabled = model(false);
   protected internalOptions = linkedSignal(() =>
     this.getOptions(this.options()!)
@@ -129,70 +134,77 @@ export class SelectComponent implements ControlValueAccessor {
       if (!source.multiple) {
         return source.options.find((o: Option) => o.selected)?.name ?? null;
       } else {
-        let filteredOptions = source.options.filter((o: Option) => o.selected);
-        return filteredOptions.length === 0 ? null : filteredOptions;
+        return this.selectedOptions;
+        // let filteredOptions = source.options.filter((o: Option) => o.selected).toSorted((a,b) => a.id!-b.id!);
+        // return filteredOptions.length === 0 ? null : filteredOptions;
       }
     },
   });
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
-   private startY = 0;
-private startX = 0;
- private moved = false;
+  private startY = 0;
+  private startX = 0;
+  private moved = false;
 
-onTouchStart(event: TouchEvent) {
-  event.stopPropagation()
-  this.startY = event.touches[0].clientY;
-  this.startX = event.touches[0].clientX;
-  this.moved = false;
-}
+  onTouchStart(event: TouchEvent) {
+    event.stopPropagation();
+    this.startY = event.touches[0].clientY;
+    this.startX = event.touches[0].clientX;
+    this.moved = false;
+  }
 
-onTouchMove(event: TouchEvent) {
-  event.stopPropagation()
-  const diffY = Math.abs(event.touches[0].clientY - this.startY);
-  const diffX = Math.abs(event.touches[0].clientX - this.startX);
-  if (diffY > 10 || diffX > 10) { // Soglia per rilevare lo scroll
-    this.moved = true;
-  }
-}
-
-onTouchEnd(event: TouchEvent, option: any, select: any) {
-  if (!this.moved) {
-    this.selectValue(option, select); // Solo se non c'è stato scroll
-  }
-}
-
-onMouseDown(event: MouseEvent, option:any, select:any) {
-  
-    event.stopPropagation()
-  
-  this.startY = event.clientY;
-  this.startX = event.clientX;
-  this.moved = false;
-  if(this.platformService.isSafariMacOS()){
-    event.preventDefault();
-    this.selectValue(option, select, event)
-  }
-}
-onClick(event:MouseEvent, option:any, select:any){
-  if(this.platformService.isChromeDesktop()){
-    this.selectValue(option, select,event);
-  }
-}
-onMouseUp(event: MouseEvent, option: any, select: any) {
-  if(this.platformService.isSafariMacOS()){
-    return;
-  }
-  event.stopPropagation();
-  const diffY = Math.abs(event.clientY - this.startY);
-  const diffX = Math.abs(event.clientX - this.startX);
-  if (diffY < 5 && diffX < 5) { // Solo se è un click, non uno scroll
-    if(this.platformService.isChromeDesktop()){
-      return
+  onTouchMove(event: TouchEvent) {
+    event.stopPropagation();
+    const diffY = Math.abs(event.touches[0].clientY - this.startY);
+    const diffX = Math.abs(event.touches[0].clientX - this.startX);
+    if (diffY > 10 || diffX > 10) {
+      // Soglia per rilevare lo scroll
+      this.moved = true;
     }
-    this.selectValue(option, select);
   }
-}
+
+  onTouchEnd(event: TouchEvent, option: any, select: any) {
+    if (!this.moved) {
+      this.selectValue(option, select, event); // Solo se non c'è stato scroll
+    }
+  }
+
+  onMouseDown(event: MouseEvent, option: any, select: any) {
+    event.stopPropagation();
+
+    this.startY = event.clientY;
+    this.startX = event.clientX;
+    this.moved = false;
+    if (this.platformService.isSafariMacOS()) {
+      event.preventDefault();
+      this.selectValue(option, select, event);
+    }
+  }
+  getNameLength(){
+   
+      return `calc(${this.selectedOptions[0].name?.length.toString()}ch + 10ch + 16px)`
+  
+  }
+  onClick(event: MouseEvent, option: any, select: any) {
+    if (this.platformService.isChromeDesktop()) {
+      this.selectValue(option, select, event);
+    }
+  }
+  onMouseUp(event: MouseEvent, option: any, select: any) {
+    if (this.platformService.isSafariMacOS()) {
+      return;
+    }
+    event.stopPropagation();
+    const diffY = Math.abs(event.clientY - this.startY);
+    const diffX = Math.abs(event.clientX - this.startX);
+    if (diffY < 5 && diffX < 5) {
+      // Solo se è un click, non uno scroll
+      if (this.platformService.isChromeDesktop()) {
+        return;
+      }
+      this.selectValue(option, select);
+    }
+  }
 
   //************* END FIELDS ***************/
 
@@ -232,9 +244,10 @@ onMouseUp(event: MouseEvent, option: any, select: any) {
         (this.internalOptions().length > 0 &&
           this.selectedValue() !== null &&
           this.selectedValue() !== undefined) ||
-        (this.internalOptions().length === 0 && this.selectedValue() === null)
-        || (this.multiple() &&
-        this.internalOptions().filter((o: Option) => o.selected).length === 0)
+        (this.internalOptions().length === 0 &&
+          this.selectedValue() === null) ||
+        (this.multiple() &&
+          this.internalOptions().filter((o: Option) => o.selected).length === 0)
       ) {
         this.notifyChange();
       }
@@ -242,76 +255,85 @@ onMouseUp(event: MouseEvent, option: any, select: any) {
   }
 
   ngAfterViewInit() {
-    this._optionsContainer()?.nativeElement.addEventListener('touchstart', (e: Event) => {
-      this.handleTouch(e as TouchEvent);
-    }, {passive: false});
+    let selectDimensions = this._select()?.nativeElement.getBoundingClientRect();
+    (this._select()?.nativeElement as HTMLElement).style.maxWidth = selectDimensions.width+'px'
+    this._optionsContainer()?.nativeElement.addEventListener(
+      'touchstart',
+      (e: Event) => {
+        this.handleTouch(e as TouchEvent);
+      },
+      { passive: false }
+    );
   }
 
   //****************************** END LIFECYCLE **************************************/
 
   //****************************** START METHODS *************************************/
   protected handleMultipleOptionTouch(event: Event, option: Option) {
-  // Previeni il comportamento di default
-  event.preventDefault();
-  event.stopPropagation();
+    // Previeni il comportamento di default
+    event.preventDefault();
+    event.stopPropagation();
 
-  // Se l'opzione non è selezionabile, esci
-  if (option.noResultOption) {
-    return;
+    // Se l'opzione non è selezionabile, esci
+    if (option.noResultOption) {
+      return;
+    }
+
+    // Simula il click sulla checkbox
+    if (!this.disabled()) {
+      this.selectValue(option, this._select()?.nativeElement, event);
+
+      // Mantieni il focus sulla select per permettere selezioni multiple
+      // this._select()?.nativeElement.focus();
+
+      // Riposiziona il container delle opzioni
+      setTimeout(() => {
+        this.setOptionsPosition(this._select()?.nativeElement);
+      }, 10);
+    }
   }
 
-  // Simula il click sulla checkbox
-  if (!this.disabled()) {
-    this.selectValue(option, this._select()?.nativeElement, event);
-    
-    // Mantieni il focus sulla select per permettere selezioni multiple
-    // this._select()?.nativeElement.focus();
-    
-    // Riposiziona il container delle opzioni
-    setTimeout(() => {
-      this.setOptionsPosition(this._select()?.nativeElement);
-    }, 10);
+  protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
+    // Gestione per dispositivi non touch
+    if (!this.disabled() && !option.noResultOption) {
+      this.selectValue(option, this._select()?.nativeElement, event);
+    }
   }
-}
-
-protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
-  // Gestione per dispositivi non touch
-  if (!this.disabled() && !option.noResultOption) {
-    this.selectValue(option, this._select()?.nativeElement, event);
-  }
-}
-/**
- * @name handleTouch
- * @param {TouchEvent} event 
- */
+  /**
+   * @name handleTouch
+   * @param {TouchEvent} event
+   */
   protected handleTouch(event: TouchEvent) {
     // Previeni il comportamento di default del browser
     event.preventDefault();
-    
+
     // Ottieni le coordinate del touch
     const touch = event.touches[0];
-    
+
     // Trova l'elemento option più vicino al punto di touch
-    const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement;
-    
+    const element = document.elementFromPoint(
+      touch.clientX,
+      touch.clientY
+    ) as HTMLElement;
+
     // Verifica se l'elemento toccato è un'opzione della select
     if (element?.closest('.option')) {
       const optionElement = element.closest('.option') as HTMLElement;
-      
+
       // Estrai i dati dell'opzione
-      const optionName = optionElement.querySelector('div')?.textContent?.trim();
-      const option = this.internalOptions().find(opt => opt.name === optionName);
-      
+      const optionName = optionElement
+        .querySelector('div')
+        ?.textContent?.trim();
+      const option = this.internalOptions().find(
+        (opt) => opt.name === optionName
+      );
+
       if (option) {
         // Simula la selezione dell'opzione
-        this.selectValue(
-          option,
-          this._select()?.nativeElement,
-          event
-        );
+        this.selectValue(option, this._select()?.nativeElement, event);
       }
     }
-    
+
     // Aggiorna la posizione del container delle opzioni
     this.setOptionsPosition(this._select()?.nativeElement);
   }
@@ -322,11 +344,8 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
    * @returns {number}
    * @description restituisce un indice randomico per ottimizzare il tracking del template
    */
-  customTrack(index: number, option: Option | string) {
-    return (
-      `${index}` +
-      `${Math.random() * index + 100}`
-    );
+  customTrack(option: Option | string) {
+    return (option as Option)?.id;
   }
   writeValue(value: any): void {
     this.internalOptions.update((options: Option[]) => {
@@ -339,6 +358,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
         };
       });
     });
+    this.selectValue(value, this._select()?.nativeElement)
   }
   onDisabled = (isDisabled: boolean) => {
     this.disabled.set(isDisabled);
@@ -358,13 +378,13 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
    * @description notifica il cambiamento di stato al contesto reactiveForms
    */
   private notifyChange(): void {
-    let selected = this.internalOptions().filter((o) => o.selected);
+    let selected = this.checkIsArray(this.selectedValue()) ? this.selectedOptions : this.internalOptions().filter((o) => o.selected);
     let mappedValue = selected
       .map((s) => ({ name: s.name, value: s }))
       .map((v) => v.value);
     this.onChange(this.multiple() ? mappedValue : mappedValue[0] ?? null);
     this.onTouched();
-    this.selection.emit(this.multiple() ? mappedValue : mappedValue[0] ?? null)
+    this.selection.emit(this.multiple() ? mappedValue : mappedValue[0] ?? null);
   }
   /**
    * @name filterElements
@@ -384,7 +404,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       this.withCustomValue()
     ) {
       this.filteredOptions.set([
-        { name: value, value, category: 'Aggiungi', custom: true },
+        {id:this.internalOptions().length + 1, name: value, value, category: 'Aggiungi', custom: true },
       ]);
     } else {
       this.filteredOptions.set(
@@ -405,8 +425,10 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
    * @returns {string}
    * @description data una option in ingresso restituisce il corrispondente nome
    */
-  getOptionName(option: Option | string) {
-    return (option as Option).name;
+  getOptionName() {
+   
+      return (this.selectedOptions)[0]?.name;
+   
   }
   /**
    * @name checkIsArray
@@ -460,10 +482,10 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       (el) => !el.children[0]?.classList?.contains('category')
     );
     this._scrollable()!.scrollToElement(
-      nativeOptions.find((el) =>
+      nativeOptions?.find((el) =>
         el.textContent === !this.multiple()
           ? (this.selectedValue() as string)
-          : (this.selectedValue() as Option[]).find(
+          : (this.selectedValue() as Option[])?.find(
               (o: Option) => o.name === el.textContent
             )
       )?.name
@@ -481,7 +503,6 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
     select: HTMLButtonElement,
     event?: Event
   ) {
-  
     if (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -497,7 +518,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       this.selection.emit(option);
       this.notifyChange();
       select.blur();
-      
+
       return;
     }
     if (!this.multiple()) {
@@ -549,18 +570,35 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       if ((option as Option).custom) {
         //se si tratta di una select multipla e se l'opzione cliccata è custom
         //aggiungo l'option custom a quelle preesistenti
-        this.internalOptions.update((options: Option[]) => [
-          ...options.slice(0, options.length),
-          {
+        let options = this.internalOptions();
+        options.push({
+          value: (option as Option).name,
+          category: 'Aggiungi',
+          name: (option as Option).name,
+          selected: true,
+        });
+        this.internalOptions.set(options)
+        if(!this.selectedOptions.find(s => s.id === (option as Option).id)){
+          this.selectedOptions.push({
             value: (option as Option).name,
             category: 'Aggiungi',
             name: (option as Option).name,
             selected: true,
-          },
-        ]);
+            id: this.internalOptions().length + 1
+          })
+        }else{
+          let index = this.selectedOptions.findIndex(o => o.id === (option as Option).id);
+          this.selectedOptions.splice(index, 1);
+        }
         //riordino le options raggruppando quelle custom sotto una cateogia comune
         this.internalOptions.set(this.getOptions(this.internalOptions()));
       } else {
+        if(!this.selectedOptions.find(s => s.id === (option as Option).id)){
+          this.selectedOptions.push(option as Option)
+        }else{
+          let index = this.selectedOptions.findIndex(o => o.id === (option as Option).id);
+          this.selectedOptions.splice(index, 1);
+        }
         // se si tratta di una select multipla e se la option cliccata non è custom metto il selected a true per quella cliccata
         this.internalOptions.update((options: Option[]) =>
           options.map((o: Option) => ({
@@ -572,7 +610,7 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
       }
       //emetto l'array di valori selezionati
       this.selection.emit(
-        this.internalOptions().filter((o: Option) => o.selected)
+        this.selectedValue()
       );
       //se non ci sono più option selezionate chiudo la dropdown
       if (
@@ -594,8 +632,6 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
         this.setOptionsPosition(this._select()?.nativeElement);
       }, 10);
     }
-    //notifico il cambiamento all'eventuale form che mi renderizza
-    // this.notifyChange();
   }
 
   handleInputFocus(event: Event) {
@@ -603,9 +639,9 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
     //   this._select()?.nativeElement.blur();
     //   return
     // }
+   
     this._select()?.nativeElement.focus();
     (event.target as any).focus();
-    
   }
   /**
    * @name setOptionsPosition
@@ -660,6 +696,9 @@ protected handleMultipleOptionSelect(event: MouseEvent, option: Option) {
           // Se non è il primo elemento del gruppo, rimuoviamo la proprietà "category"
           if (index !== 0) {
             delete newItem.category;
+          }
+          if(!newItem.id){
+            newItem.id = index
           }
           newItem.last = false;
           // Se è l'ultimo elemento di un gruppo con category, aggiungiamo la proprietà "last: true"

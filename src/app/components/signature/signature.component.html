@@ -68,18 +68,24 @@
                   [style.color]="signature().azienda?.value?.color"
                 >
                   <b>{{
-                    signature().nomecognome !== ""
-                      ? signature().nomecognome
-                      : "Nome e cognome"
-                  }}</b
-                  ><br />
+                    signature().nome !== ""
+                      ? signature().nome
+                      : "Nome"
+                  }}</b>
+                  <span>&nbsp;</span>
+                  <b>{{
+                    signature().cognome !== ""
+                      ? signature().cognome
+                      : "Cognome"
+                  }}</b>
+                  <br />
                   @if(
                  ( signature().area?.name === null 
                   || signature().area?.name === undefined
                   || signature().area?.name === '') &&
-                  (getNames(signature().ruolo) === null ||
-                  getNames(signature().ruolo) === undefined ||
-                  getNames(signature().ruolo) === '' )
+                  (signature().ruolo?.name === null ||
+                  signature().ruolo?.name === undefined ||
+                  signature().ruolo?.name === '' )
                   ){
 
                     <span
@@ -109,7 +115,7 @@
                       font-style: italic;
                     "
                   >
-                    {{ getNames(signature().ruolo) }}
+                    {{ signature().ruolo?.name }}
                   </span>
 
                   <!-- <span *ngIf="selectedTitoloLavorativo && selectedRuoloProgetto && selectedRuoloProgetto!='undefined'" style="font-size:14px; color:rgb(51,51,51); font-style:italic">, {{selectedRuoloProgetto}}</span>-->
@@ -300,6 +306,7 @@
       align-items: center;
       width: 100%;
       flex-wrap: wrap;
+      color: rgb(33, 37, 41);
     "
   >
     <b [style.color]="signature().azienda?.value?.color">{{

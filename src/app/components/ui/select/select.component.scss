@@ -1,3 +1,6 @@
+input::placeholder{
+  color: var(--foreground-disabled);
+}
 :host {
   width: 100%;
   &.ng-invalid {
@@ -6,12 +9,10 @@
     }
   }
   &:has(button:disabled){
-    opacity: .8;
     pointer-events: none;
   }
   &[ng-reflect-is-disabled="true"] {
     .wrapper {
-      opacity: .8;
       pointer-events: none;
     }
     .select {
@@ -24,7 +25,6 @@
   flex-direction: column;
   label {
     color: var(--foreground-secondary, #334155);
-    /* Inter/Subtitle 2 */
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -40,7 +40,7 @@
     outline: none;
     border-radius: 8px;
     border: 1px solid var(--border-primary, #cbd5e1);
-    background: var(--background-secondary, #f8fafc);
+    background: var(--background-primary, #ffffff);
     color: var(--foreground-tertiary, #475569);
     font-family: Inter;
     font-size: 16px;
@@ -49,7 +49,7 @@
     line-height: normal;
     letter-spacing: 0.08px;
     display: flex;
-    height: 40px;
+    height: 48px;
     min-width: 150px;
     width: 100%;
     padding: 8px 12px;
@@ -59,7 +59,6 @@
     align-self: stretch;
     position: relative;
     text-align: left;
-  
     cursor: pointer;
     .defaultValue input,
     .selectedValue input {
@@ -75,24 +74,22 @@
       width: 100%;
     }
     .placeholder {
-      opacity: 0.6;
+      color: var(--foreground-disabled);
     }
     .selectedValue {
-      max-width: 300px;
+      width: 100%;
       white-space: no-wrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .container-multiple-values {
       white-space: nowrap;
-      overflow-x: auto;
+      overflow-x: hidden;
       overflow-y: hidden;
-      display: flex;
+      display: contents;
       align-items: center;
-      max-width: var(--maxWidth);
       width: 100%;
       box-sizing: border-box;
-      min-width: fit-content;
       border: none;
       gap: 5px;
       &::-webkit-scrollbar {
@@ -101,6 +98,7 @@
     }
     .counter-selected-values {
       display: flex;
+      visibility: hidden;
       margin-left: 5px;
       width: 24px;
       font-size: 12px;
@@ -124,16 +122,24 @@
       background: var(--background-primary, #fff);
       color: var(--Foreground-Neutral-Primary, #0f172a);
       font-family: Inter;
-      font-size: 14px;
+      font-family: Inter;
+      font-size: 16px;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
-      letter-spacing: 0.035px;
+      letter-spacing: 0.08px;
     }
     .containerChevronAndCounter svg {
       margin-left: auto;
       min-width: 25px;
       transition: rotate 0.1s ease-in-out;
+    }
+    
+    &:focus, &:has(input:focus){
+      outline: 1px solid var(--border-brand, #0c8ced);
+    }
+    &:disabled{
+      background: var(--background-tertiary, #F1F5F9);
     }
     &:focus-within .options {
       display: flex;
@@ -165,11 +171,11 @@
     box-sizing: border-box;
     color: var(--foreground-primary, #0f172a);
     font-family: Inter;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    letter-spacing: 0.035px;
+    letter-spacing: 0.08px;
     .option-icon {
       max-width: 16px;
       aspect-ratio: 1/1;
@@ -193,6 +199,7 @@
     z-index: 99;
     display: none;
     width: 0px;
+    position: relative;
     transition: opacity 0.1s ease-in-out;
     flex-direction: column;
     align-items: flex-start;

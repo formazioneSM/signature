@@ -66,43 +66,7 @@
       }
     ]
   },
-  {
-    "name": "DP Innovation",
-    "btnName": "DP Innovation",
-    "logo": "https://sysmanagement.it/signature-assets/dp_old_old.png",
-    "color": "var(--interaction-primary-default, #006ccb)",
-    "website": null,
-    "versions": [],
-    "workplace": [
-      {
-        "id": 1,
-        "name": "Legnano",
-        "address": "Via XX Settembre, 30 - Edificio B5, 20025 Legnano (MI)",
-        "phone": "+39 0331 456159",
-        "labelPhone": "+39 0331 456159",
-        "interno": null,
-        "internoLabel": null
-      },
-      {
-        "id": 2,
-        "name": "Cadeo",
-        "address": "Via Emilia 231, 29010 – Cadeo",
-        "phone": "+39 0523 50161",
-        "labelPhone": "+39 0523 50161",
-        "interno": null,
-        "internoLabel": null
-      },
-      {
-        "id": 3,
-        "name": "Tortoreto",
-        "address": "Via Nazionale, Km 404,500 – 64018 Tortoreto",
-        "phone": "+39 0861 772511",
-        "labelPhone": "+39 0861 772511",
-        "interno": null,
-        "internoLabel": null
-      }
-    ]
-  },
+
   {
     "name": "AIDA srl",
     "btnName": "AIDA",

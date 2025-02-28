@@ -25,7 +25,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class InputComponent implements ControlValueAccessor {
   value = model<string>('');
-  type= input<'text' | 'submit' | 'number'>('text');
+  type= input<'text' | 'submit' | 'number' | 'tel'>('text');
   label= input<string | undefined>();
   labelStyles= input<{[key:string]: any}>()
   helperText= input<string | undefined>();
@@ -45,7 +45,7 @@ export class InputComponent implements ControlValueAccessor {
   }
   setDisabledState?(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
-    this.value.set('')
+    this.value.set(isDisabled ? '' : this.value())
     this.notifyChange();
   }
   private notifyChange(): void {

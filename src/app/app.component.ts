@@ -1,147 +1,87 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
+  HostListener,
   inject,
   linkedSignal,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SignatureComponent } from './components/signature/signature.component';
-import { CheckboxComponent } from './components/ui/checkbox/checkbox.component';
-import { InputComponent } from './components/ui/input/input.component';
-import {
-  Option,
-  SelectComponent,
-} from './components/ui/select/select.component';
-import { Company } from './models/company.model';
-import {
-  SignatureForm,
-  SignatureFormValues,
-} from './models/signatureForm.model';
-import { getAreas } from './services/areas.service';
-import { getCompanies } from './services/companies.service';
-import { getRoles } from './services/roles.service';
+import { ButtonComponent } from './components/ui/button/button.component';
+import { SignatureFormComponent } from './components/ui/signature-form/signature-form.component';
+import { StepperService } from './services/stepper.service';
 import { SignatureService } from './services/signature.service';
-import { Workplace } from './models/signature.model';
-import { ButtonComponent } from "./components/ui/button/button.component";
-document.ontouchmove = function(event){
+import { SignatureFormValues } from './models/signatureForm.model';
+import { Indirizzo, Signature } from './models/signature.model';
+import { JsonPipe } from '@angular/common';
+document.ontouchmove = function (event) {
   event.preventDefault();
-}
+};
+
 @Component({
   selector: 'app-root',
-  imports: [
-    SelectComponent,
-    SignatureComponent,
-    ReactiveFormsModule,
-    InputComponent,
-    CheckboxComponent,
-    ButtonComponent
-],
+  imports: [SignatureComponent, ButtonComponent, SignatureFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  feedbackCopyMessage = signal(false);
-  companies = getCompanies();
-  activeConfig = signal(false);
-  roles = getRoles();
-  areas = getAreas();
-  signatureService = inject(SignatureService);
-  workPlaces = linkedSignal<
-    Partial<SignatureFormValues> | undefined,
-    any[] | null
-  >({
-    source: () => this.signatureService.formValue(),
-    computation: (source: any, prev) => {
-      if (
-        (prev?.source?.azienda as any)?.name !== null &&
-        (prev?.source?.azienda as any)?.name !== undefined &&
-        (prev?.source?.azienda as any)?.name !== source?.azienda?.name
-      ) {
-        return null;
-      }
-      return ((source?.azienda as Option)?.value as Company)?.workplace || null;
-    },
-  });
-  versions = linkedSignal<
-    Partial<SignatureFormValues> | undefined,
-    any[] | null
-  >({
-    source: () => this.signatureService.formValue(),
-    computation: (source: any, prev) => {
-      if (
-        (prev?.source?.azienda as any)?.name !== null &&
-        (prev?.source?.azienda as any)?.name !== undefined &&
-        (prev?.source?.azienda as any)?.name !== source?.azienda?.name
-      ) {
-        return null;
-      }
-      return ((source?.azienda as Option)?.value as Company)?.versions || null;
-    },
-  });
-  form!: SignatureForm;
-  fisrtTime:boolean = true;
-  private _fb = inject(FormBuilder);
-  get indirizzo(){
-    return this.form.get('indirizzo');
-  }
-  get versione(){
-    return this.form.get('version');
-  }
-  get interno(){
-    return this.form.get('interno');
-  }
-  constructor() {
-    this.form = this._fb.nonNullable.group<SignatureFormValues>({
-      azienda: {value: '', disabled: false},
-      area: [],
-      version: '',
-      indirizzo: '',
-      mobile: '',
-      interno: '',
-      nomecognome: '',
-      disclaimer: false,
-      ruolo: [],
-      avvisoambientale: false,
-    });
-
-    this.signatureService.linkForm(this.form);
-
-  }
-  checkInterno(event:Workplace | null){
-    if(event === null || event.interno === null){
-      this.interno?.disable()
-    }else if(event !== null && event?.interno){
-      this.interno?.enable()
+  // HostListener per l'evento di resize
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (window.innerWidth < 900) {
+      this.stepperService.isMobile.set(true);
+    } else {
+      this.stepperService.isMobile.set(false);
     }
   }
-checkAddressAndVersion(event:Option | null){ 
-  if(event === null){
-    this.indirizzo?.disable();
-  }else{
-    this.indirizzo?.enable();
+  feedbackCopyMessage = signal(false);
+  stepperService = inject(StepperService);
+  placeholders = signal([...new Array(5)].map((a) => this.rndInt()));
+  rndInt() {
+    return (
+      Math.floor(Math.floor(Math.random() * (100 - 20 + 1) + 20)).toString() +
+      '%'
+    );
   }
-  if(event !== null && event?.value?.versions?.length === 0){
-    this.versione?.disable()
-  }else if(event !== null && event?.value?.versions?.length > 0){
-    this.versione?.enable()
-  }
-}
-
-copySignature = () => {
-  window.getSelection()!.removeAllRanges();
-  const body = document.querySelector('#signature');
-  const range = document.createRange();
-  range.selectNode(body!);
-  window.getSelection()!.addRange(range);
-  document.execCommand('copy');
-  window.getSelection()!.removeAllRanges();
-  this.feedbackCopyMessage.set(true);
-  setTimeout(() => {
-    this.feedbackCopyMessage.set(false);
-  }, 3000);
-}
-  title = 'smSignature';
+  signatureService = inject(SignatureService);
+  signatureData = this.signatureService.formValue;
+  signature = linkedSignal<
+    Partial<SignatureFormValues> | undefined,
+    Partial<Signature>
+  >({
+    source: () => this.signatureService.formValue(),
+    computation: (source) => {
+      return source as Partial<Signature>;
+    },
+  });
+  disabledButton = computed( () => {
+    return this.stepperService.step() === 1 && (
+      this.signature().azienda === null || 
+      this.signature().azienda === undefined
+  ) ||
+    this.stepperService.step() === 2 && (
+      this.signature().nome === '' ||
+          this.signature().cognome === '' ||
+          (this.signature().area === null || this.signature().area?.name === '') ||
+          (this.signature().ruolo === null || this.signature().ruolo?.name === '')
+    ) ||
+    this.stepperService.step() === 3 && (
+      this.signature().indirizzo === '' || this.signature().indirizzo === null || (this.signature().indirizzo as Indirizzo)?.name === ''
+    )
+  })
+  copySignature = () => {
+    window.getSelection()!.removeAllRanges();
+    const body = document.querySelector('#signature');
+    const range = document.createRange();
+    range.selectNode(body!);
+    window.getSelection()!.addRange(range);
+    document.execCommand('copy');
+    window.getSelection()!.removeAllRanges();
+    this.feedbackCopyMessage.set(true);
+    setTimeout(() => {
+      this.feedbackCopyMessage.set(false);
+    }, 3000);
+  };
 }

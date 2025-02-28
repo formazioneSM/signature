@@ -16,7 +16,6 @@
     (focus)="setOptionsPosition(select, $event)"
     (touchstart)="setOptionsPosition(select, $event) "
     (touchend)="setOptionsPosition(select, $event)"
-    
     (click)="handleInputFocus($event)"
     (keyup.enter)="handleEnterKeyup(select)"
     (keyup.arrowdown)="navigateSelectedOption(true)"
@@ -44,7 +43,6 @@
         <div
           style="flex: 1; color: var(--foreground-primary, #0f172a); white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"
           class="defaultValue"
-     
         >
         @if(searchble()){
 
@@ -52,7 +50,7 @@
             type="text"
             (click)="handleInputFocus($event)"
             (input)="filterElements($event)"
-            placeholder="Aggiungi un elemento"
+            [placeholder]="placeholder()"
           />
         }@else{
           <span [class.placeholder]="
@@ -60,7 +58,7 @@
         " (click)="handleInputFocus($event)"
           (input)="filterElements($event)"
           style="white-space: nowrap;">
-          {{selectedValue()??'Aggiungi un elemento'}}
+          {{selectedValue()??placeholder()}}
         </span>
         }
         </div>
@@ -74,60 +72,53 @@
     
       >
       @if(searchble()){
-
         <input
           type="text"
           (touchstart)="handleInputFocus($event)"
           (click)="handleInputFocus($event)"
           (input)="filterElements($event)"
           #inputSingleValue
-          placeholder="seleziona elemento"
+          [placeholder]="placeholder()"
           [value]="selectedValue()"
         />
       }@else{
         <span [class.placeholder]="
         selectedValue() === null && !multiple()
-      " style="white-space: nowrap;">{{selectedValue()??'seleziona elemento'}}</span>
+      " style="white-space: nowrap;">{{selectedValue()??placeholder()}}</span>
       }
-        <!-- {{ selectedValue() }} -->
       </div>
       }@else{
-      <ng-scrollbar
-        visibility="hover"
-        orientation="horizontal"
-        appearance="compact"
-        style="
-          max-width: var(--maxWidth);
-          max-height: none;
-          white-space: nowrap;
-        "
-      >
-        <div class="container-multiple-values">
-          @for (value of selectedValue(); track customTrack($index, value)) {
-          <div class="selectedValue-multiple">
-            <span>{{ getOptionName(value) }}</span>
-            <svg
-              (click)="selectValue(value, select)"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="X">
-                <path
-                  id="Vector"
-                  d="M12.765 12.235C12.8019 12.2693 12.8314 12.3107 12.8519 12.3567C12.8724 12.4027 12.8835 12.4524 12.8843 12.5027C12.8852 12.5531 12.876 12.6031 12.8571 12.6498C12.8382 12.6965 12.8102 12.7389 12.7746 12.7745C12.739 12.8101 12.6965 12.8382 12.6498 12.8571C12.6032 12.8759 12.5531 12.8852 12.5028 12.8843C12.4524 12.8834 12.4028 12.8724 12.3568 12.8519C12.3108 12.8314 12.2694 12.8018 12.235 12.765L8.00005 8.53062L3.76505 12.765C3.69396 12.8312 3.59993 12.8673 3.50278 12.8656C3.40563 12.8639 3.31294 12.8245 3.24423 12.7558C3.17553 12.6871 3.13617 12.5944 3.13446 12.4973C3.13274 12.4001 3.16881 12.3061 3.23505 12.235L7.46942 8L3.23505 3.765C3.16881 3.69391 3.13274 3.59989 3.13446 3.50274C3.13617 3.40559 3.17553 3.3129 3.24423 3.24419C3.31294 3.17548 3.40563 3.13613 3.50278 3.13441C3.59993 3.1327 3.69396 3.16876 3.76505 3.235L8.00005 7.46937L12.235 3.235C12.3061 3.16876 12.4002 3.1327 12.4973 3.13441C12.5945 3.13613 12.6872 3.17548 12.7559 3.24419C12.8246 3.3129 12.8639 3.40559 12.8656 3.50274C12.8673 3.59989 12.8313 3.69391 12.765 3.765L8.53067 8L12.765 12.235Z"
-                  fill="#0F172A"
-                />
-              </g>
-            </svg>
-          </div>
+
+        <div class="container-multiple-values" >
+          @for (value of selectedValue(); track customTrack(value)) {
+            @if($index === 0){
+
+              <div class="selectedValue-multiple">
+                <span>{{ getOptionName() }}</span>
+                <svg
+                  (click)="selectValue(value, select)"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="X">
+                    <path
+                      id="Vector"
+                      d="M12.765 12.235C12.8019 12.2693 12.8314 12.3107 12.8519 12.3567C12.8724 12.4027 12.8835 12.4524 12.8843 12.5027C12.8852 12.5531 12.876 12.6031 12.8571 12.6498C12.8382 12.6965 12.8102 12.7389 12.7746 12.7745C12.739 12.8101 12.6965 12.8382 12.6498 12.8571C12.6032 12.8759 12.5531 12.8852 12.5028 12.8843C12.4524 12.8834 12.4028 12.8724 12.3568 12.8519C12.3108 12.8314 12.2694 12.8018 12.235 12.765L8.00005 8.53062L3.76505 12.765C3.69396 12.8312 3.59993 12.8673 3.50278 12.8656C3.40563 12.8639 3.31294 12.8245 3.24423 12.7558C3.17553 12.6871 3.13617 12.5944 3.13446 12.4973C3.13274 12.4001 3.16881 12.3061 3.23505 12.235L7.46942 8L3.23505 3.765C3.16881 3.69391 3.13274 3.59989 3.13446 3.50274C3.13617 3.40559 3.17553 3.3129 3.24423 3.24419C3.31294 3.17548 3.40563 3.13613 3.50278 3.13441C3.59993 3.1327 3.69396 3.16876 3.76505 3.235L8.00005 7.46937L12.235 3.235C12.3061 3.16876 12.4002 3.1327 12.4973 3.13441C12.5945 3.13613 12.6872 3.17548 12.7559 3.24419C12.8246 3.3129 12.8639 3.40559 12.8656 3.50274C12.8673 3.59989 12.8313 3.69391 12.765 3.765L8.53067 8L12.765 12.235Z"
+                      fill="#0F172A"
+                    />
+                  </g>
+                </svg>
+              </div>
+            }
+          
+            
           }
         </div>
-      </ng-scrollbar>
 
-      <div style="display: flex; align-items: center">
+      <div  style="display: flex; align-items: center;white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
         <svg
           width="17"
           height="16"
@@ -146,8 +137,9 @@
         <div
           style="
             flex: 1;
-            min-width: 10rem;
+           
             color: var(--foreground-primary, #0f172a);
+            white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
           "
           class="defaultValue"
         >
@@ -156,7 +148,7 @@
             (click)="handleInputFocus($event)"
             (input)="filterElements($event)"
             #searchInput
-            placeholder="Aggiungi un elemento"
+            [placeholder]="placeholder()"
           />
         </div>
       </div>
@@ -181,10 +173,10 @@
         (click)="onClick($event, null, select)"
           class="option placeholder"
         >
-          <div  style="flex: 1">seleziona elemento</div>
+          <div  style="flex: 1">{{placeholder()}}</div>
         </div>
         } @for(option of filteredOptions().length > 0 ? filteredOptions() :
-        internalOptions();track customTrack($index, option)){ @if(option.category){
+        internalOptions();track customTrack(option)){ @if(option.category){
         <div class="option">
           <div class="category">{{ option.category }}</div>
         </div>
@@ -220,7 +212,7 @@
             {{ option.name }}
           </div>
           <!--INIZIO SPUNTA PER L'ELEMENTO SELEZIONATO-->
-          @if(option.selected){
+          @if(option.selected && !multiple()){
           <svg
             width="16"
             height="16"
@@ -246,14 +238,16 @@
     </div>
     <!--FINE CONTENITORE OPTIONS-->
     <div
-
-      style="display: flex; align-items: center; margin-left: auto; gap: 5px; "  
+    class="containerChevronAndCounter"
+      [style]="!multiple() ? {'display': 'flex', 'align-items': 'center', 'gap': '5px'} : {'display':'flex', 'align-items':'center', 'margin-left': 'auto', 'gap': '5px'}"  
     >
-      @if(checkIsArray(selectedValue()) && selectedValue() !== null && (selectedValue()?.length)! > 0){
-      <div class="counter-selected-values">
-        {{ selectedValue()?.length }}
+
+      <div [style.visibility]="checkIsArray(selectedValue()) && selectedValue() !== null && (selectedValue()?.length)! > 1 ? 'visible': 'hidden'" class="counter-selected-values">
+        
+          <span>+</span>{{ (selectedValue()?.length)!-1 }}
+        
       </div>
-      }
+      
       <!--INIZIO FRECCIA DROPDOWN-->
       <svg
 

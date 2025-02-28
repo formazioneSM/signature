@@ -1,0 +1,115 @@
+
+<form [formGroup]="form" >
+  @if(!stepperService.isMobile() || (stepperService.step() === 1 && stepperService.isMobile())){
+<div>
+  <div class="title">Informazioni azienda</div>
+  <div class="cols2-1row" >
+    <lieveeto-select
+      [label]="'Azienda del gruppo DigitalPlatforms'"
+      [placeholder]="'Seleziona la tua azienda'"
+      formControlName="azienda"
+      searchble
+      (selection)="checkAddressAndVersion($event)"
+      [options]="companies.value()!"
+    />
+    <lieveeto-select
+      [label]="'Versione logo'"
+      [placeholder]="'Seleziona versione logo'"
+      formControlName="version"
+      [options]="versions()!"
+    />
+  </div>
+  
+</div>
+}
+@if(!stepperService.isMobile() || (stepperService.step() === 2 && stepperService.isMobile())){
+<div>
+
+  <div class="title">Dati personali</div>
+  <div class="cols2-1row" style="margin-bottom: 21px;">
+    <lieeveto-input
+      formControlName="nome"
+      [label]="'Nome'"
+      [placeholder]="'Inserisci nome'"
+    />
+    <lieeveto-input
+      formControlName="cognome"
+      [label]="'Cognome'"
+      [placeholder]="'Inserisci cognome'"
+    />
+  </div>
+  <div class="cols2-1row">
+    <lieveeto-select
+      [label]="'Area di competenza'"
+      [placeholder]="'Seleziona la tua area di competenza'"
+      searchble
+      formControlName="area"
+      [options]="areas.value()!"
+    />
+
+    <lieveeto-select
+      [label]="'Titolo lavorativo'"
+      [placeholder]="'Aggiungi titolo lavorativo'"
+      
+      searchble
+      formControlName="ruolo"
+      [options]="roles.value()!"
+    />
+  </div>
+</div>
+}
+@if(!stepperService.isMobile() || (stepperService.step() === 3 && stepperService.isMobile()) ){
+<div>
+  <div class="title">Contatti</div>
+  <div
+    class="cols-autofit-1row" 
+  >
+
+
+    <lieveeto-select
+      [placeholder]="'Seleziona indirizzo'"
+      [label]="'Indirizzo'"
+      formControlName="indirizzo"
+      [options]="workPlaces()!"
+      (selection)="checkInterno($event)"
+    />
+ 
+
+    <lieeveto-input
+      [label]="'Mobile (opzionale)'"
+      [placeholder]="'Inserisci mobile'"
+      [type]="'tel'"
+      formControlName="mobile"
+    />
+
+     <lieeveto-input
+      [placeholder]="'Inserisci interno'"
+      [label]="'Interno (opzionale)'"
+      [type]="'number'"
+      formControlName="interno"
+    />
+ 
+   
+  </div>
+</div>
+<div>
+
+  <div class="title">Preferenze e consensi</div>
+  <lieveeto-checkbox
+    [label]="'Disclaimer di riservatezza (opzionale)'"
+    formControlName="disclaimer"
+  />
+  <div class="disclaimerText">
+      “Questo messaggio e i suoi allegati sono indirizzati esclusivamente alle persone indicate. La diffusione, copia o qualsiasi altra azione derivante dalla conoscenza di queste informazioni sono rigorosamente vietate. Qualora abbiate ricevuto questo documento per errore siete cortesemente pregati di darne immediata comunicazione al mittente e di provvedere alla sua distruzione, Grazie.”
+  </div>
+  <lieveeto-checkbox
+    [label]="'Avviso ambientale (opzionale)'"
+    formControlName="avvisoambientale"
+  />
+  <div class="disclaimerText">
+      “Per favore pensate all'ambiente prima di stampare questa e-mail.”
+  </div>
+</div>
+}
+
+</form>

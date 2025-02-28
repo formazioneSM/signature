@@ -11,6 +11,7 @@
 .my-checkbox {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .disabled {
@@ -91,21 +92,16 @@
 }
 
 .my-checkbox__label {
+  cursor: pointer;
   margin-left: 0.5rem;
   color: var(--foreground-primary, #0f172a);
-  font-family: Inter;
+  font-family: Inter-medium;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: normal;
   letter-spacing: 0.035px;
   &.disabled {
     color: var(--foreground-secondary, #334155);
   }
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.035px;
 }

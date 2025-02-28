@@ -1,3 +1,6 @@
+:host{
+  width: 100%;
+}
 .btn {
   cursor: pointer;
   display: flex;
@@ -14,7 +17,7 @@
   line-height: normal;
   letter-spacing: 0.035px;
   border: none;
-
+width: 100%;
   
 }
 

@@ -1,112 +1,129 @@
+
 <div class="container">
-  @if(feedbackCopyMessage()){
-    <div class="alert">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.875 11C8.875 11.0995 8.83549 11.1948 8.76517 11.2652C8.69484 11.3355 8.59946 11.375 8.5 11.375C8.26794 11.375 8.04538 11.2828 7.88128 11.1187C7.71719 10.9546 7.625 10.7321 7.625 10.5V8C7.625 7.96685 7.61183 7.93505 7.58839 7.91161C7.56495 7.88817 7.53315 7.875 7.5 7.875C7.40055 7.875 7.30516 7.83549 7.23484 7.76516C7.16451 7.69484 7.125 7.59946 7.125 7.5C7.125 7.40054 7.16451 7.30516 7.23484 7.23484C7.30516 7.16451 7.40055 7.125 7.5 7.125C7.73207 7.125 7.95463 7.21719 8.11872 7.38128C8.28282 7.54538 8.375 7.76794 8.375 8V10.5C8.375 10.5332 8.38817 10.5649 8.41161 10.5884C8.43506 10.6118 8.46685 10.625 8.5 10.625C8.59946 10.625 8.69484 10.6645 8.76517 10.7348C8.83549 10.8052 8.875 10.9005 8.875 11ZM7.75 5.875C7.87362 5.875 7.99445 5.83834 8.09723 5.76967C8.20002 5.70099 8.28012 5.60338 8.32743 5.48918C8.37473 5.37497 8.38711 5.24931 8.36299 5.12807C8.33888 5.00683 8.27935 4.89547 8.19195 4.80806C8.10454 4.72065 7.99317 4.66112 7.87193 4.63701C7.7507 4.61289 7.62503 4.62527 7.51083 4.67258C7.39662 4.71988 7.29901 4.79999 7.23033 4.90277C7.16166 5.00555 7.125 5.12639 7.125 5.25C7.125 5.41576 7.19085 5.57473 7.30806 5.69194C7.42527 5.80915 7.58424 5.875 7.75 5.875ZM14.375 8C14.375 9.26086 14.0011 10.4934 13.3006 11.5418C12.6001 12.5901 11.6045 13.4072 10.4396 13.8897C9.27473 14.3722 7.99293 14.4985 6.7563 14.2525C5.51967 14.0065 4.38376 13.3994 3.4922 12.5078C2.60064 11.6162 1.99348 10.4803 1.7475 9.2437C1.50152 8.00707 1.62776 6.72527 2.11027 5.56039C2.59278 4.39551 3.40988 3.39988 4.45824 2.69938C5.50661 1.99889 6.73915 1.625 8 1.625C9.69015 1.62698 11.3105 2.29927 12.5056 3.49439C13.7007 4.6895 14.373 6.30985 14.375 8ZM13.625 8C13.625 6.88748 13.2951 5.79994 12.677 4.87492C12.0589 3.94989 11.1804 3.22892 10.1526 2.80318C9.12476 2.37743 7.99376 2.26604 6.90262 2.48308C5.81148 2.70012 4.8092 3.23585 4.02253 4.02252C3.23586 4.80919 2.70013 5.81147 2.48309 6.90262C2.26604 7.99376 2.37744 9.12476 2.80318 10.1526C3.22892 11.1804 3.94989 12.0589 4.87492 12.677C5.79995 13.2951 6.88748 13.625 8 13.625C9.49134 13.6233 10.9211 13.0302 11.9757 11.9756C13.0302 10.9211 13.6233 9.49133 13.625 8Z" fill="#047647"/>
-        </svg>        
-      <div class="title">Ottimo!</div>
-      <div class="content">Firma copiata con successo!</div>
+ 
+  @if(!stepperService.isMobile() || (stepperService.step() <= 3 && stepperService.isMobile()) ){
+  <section id="left" style="height: 100svh; overflow-y: auto;">
+  
+      <div class="app-title">
+        <span>Signature</span>
+        <div class="dot"></div>
+      </div>
+      <div class="subtitle-app">
+        Compila i campi richiesti per generare la tua firma aziendale.
+      </div>  
+      <div class="stepper">
+      <div class="infoContainer">
+        <div class="number" [class.active]="stepperService.step() === 1 || stepperService.step() > 1">1</div>
+        <span [class.active]="stepperService.step() === 1 || stepperService.step() > 1">Azienda</span> 
+      </div>
+      <div class="infoContainer">
+        <div class="number" 
+        [class.active]="stepperService.step() === 2 || stepperService.step() > 2"
+       >2</div>
+        <span 
+        [class.active]="stepperService.step() === 2 || stepperService.step() > 2"
+       >Dati personali</span> 
+      </div>
+      <div class="infoContainer" >
+        <div class="number" 
+        [class.disabled]="stepperService.step() === 1" 
+        [class.active]="stepperService.step() === 3 || stepperService.step() > 3" >3</div>
+        <span 
+        [class.active]="stepperService.step() === 3 || stepperService.step() > 3"
+        [class.disabled]="stepperService.step() === 1">Contatti e preferenze</span> 
+      </div>
     </div>
-  }
-  <section>
-    <div class="sub-brand"> <span class="name-app">Signature</span> </div>
-    <app-signature></app-signature>
-    <div style="justify-self: center;">
-      <lieveeto-button (onClick)="copySignature()">
-        Copia la firma
-      </lieveeto-button>
-    </div>
+      <app-signature-form />
+      <div class="stepperButton" >
+        <lieveeto-button (onClick)="stepperService.step.set(stepperService.step()+1)"
+        [disabled]="disabledButton()">
+          Avanti
+        </lieveeto-button>
+        @if(stepperService.step() > 1){
+          <lieveeto-button 
+          [aspect]="'default-tertiary'" 
+          (onClick)="stepperService.step.set(stepperService.step()-1)"
+          
+          >
+            Indietro
+          </lieveeto-button>
+        }
+      </div>
   </section>
-  <section>
-    <div class="sizing" [class.active]="activeConfig()" (click)="activeConfig.set(!activeConfig())">
-      <svg
-      width="25"
-      height="24"
-      viewBox="0 0 25 24"
+}
+@if(!stepperService.isMobile() || (stepperService.step() > 3  && stepperService.isMobile()) ){
+  <section id="right">
+     @if(feedbackCopyMessage()){
+  <div class="alert">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="CaretDown">
-        <path
-          id="Vector"
-          d="M20.7806 9.53063L13.2806 17.0306C13.211 17.1004 13.1283 17.1557 13.0372 17.1934C12.9462 17.2312 12.8486 17.2506 12.75 17.2506C12.6514 17.2506 12.5538 17.2312 12.4628 17.1934C12.3717 17.1557 12.289 17.1004 12.2194 17.0306L4.71937 9.53063C4.57864 9.3899 4.49958 9.19902 4.49958 9C4.49958 8.80098 4.57864 8.61011 4.71937 8.46937C4.8601 8.32864 5.05097 8.24958 5.25 8.24958C5.44902 8.24958 5.63989 8.32864 5.78062 8.46937L12.75 15.4397L19.7194 8.46937C19.7891 8.39969 19.8718 8.34442 19.9628 8.3067C20.0539 8.26899 20.1515 8.24958 20.25 8.24958C20.3485 8.24958 20.4461 8.26899 20.5372 8.3067C20.6282 8.34442 20.7109 8.39969 20.7806 8.46937C20.8503 8.53906 20.9056 8.62178 20.9433 8.71283C20.981 8.80387 21.0004 8.90145 21.0004 9C21.0004 9.09855 20.981 9.19613 20.9433 9.28717C20.9056 9.37822 20.8503 9.46094 20.7806 9.53063Z"
-          fill="#0F172A"
-        />
-      </g>
+      <path
+        d="M8.875 11C8.875 11.0995 8.83549 11.1948 8.76517 11.2652C8.69484 11.3355 8.59946 11.375 8.5 11.375C8.26794 11.375 8.04538 11.2828 7.88128 11.1187C7.71719 10.9546 7.625 10.7321 7.625 10.5V8C7.625 7.96685 7.61183 7.93505 7.58839 7.91161C7.56495 7.88817 7.53315 7.875 7.5 7.875C7.40055 7.875 7.30516 7.83549 7.23484 7.76516C7.16451 7.69484 7.125 7.59946 7.125 7.5C7.125 7.40054 7.16451 7.30516 7.23484 7.23484C7.30516 7.16451 7.40055 7.125 7.5 7.125C7.73207 7.125 7.95463 7.21719 8.11872 7.38128C8.28282 7.54538 8.375 7.76794 8.375 8V10.5C8.375 10.5332 8.38817 10.5649 8.41161 10.5884C8.43506 10.6118 8.46685 10.625 8.5 10.625C8.59946 10.625 8.69484 10.6645 8.76517 10.7348C8.83549 10.8052 8.875 10.9005 8.875 11ZM7.75 5.875C7.87362 5.875 7.99445 5.83834 8.09723 5.76967C8.20002 5.70099 8.28012 5.60338 8.32743 5.48918C8.37473 5.37497 8.38711 5.24931 8.36299 5.12807C8.33888 5.00683 8.27935 4.89547 8.19195 4.80806C8.10454 4.72065 7.99317 4.66112 7.87193 4.63701C7.7507 4.61289 7.62503 4.62527 7.51083 4.67258C7.39662 4.71988 7.29901 4.79999 7.23033 4.90277C7.16166 5.00555 7.125 5.12639 7.125 5.25C7.125 5.41576 7.19085 5.57473 7.30806 5.69194C7.42527 5.80915 7.58424 5.875 7.75 5.875ZM14.375 8C14.375 9.26086 14.0011 10.4934 13.3006 11.5418C12.6001 12.5901 11.6045 13.4072 10.4396 13.8897C9.27473 14.3722 7.99293 14.4985 6.7563 14.2525C5.51967 14.0065 4.38376 13.3994 3.4922 12.5078C2.60064 11.6162 1.99348 10.4803 1.7475 9.2437C1.50152 8.00707 1.62776 6.72527 2.11027 5.56039C2.59278 4.39551 3.40988 3.39988 4.45824 2.69938C5.50661 1.99889 6.73915 1.625 8 1.625C9.69015 1.62698 11.3105 2.29927 12.5056 3.49439C13.7007 4.6895 14.373 6.30985 14.375 8ZM13.625 8C13.625 6.88748 13.2951 5.79994 12.677 4.87492C12.0589 3.94989 11.1804 3.22892 10.1526 2.80318C9.12476 2.37743 7.99376 2.26604 6.90262 2.48308C5.81148 2.70012 4.8092 3.23585 4.02253 4.02252C3.23586 4.80919 2.70013 5.81147 2.48309 6.90262C2.26604 7.99376 2.37744 9.12476 2.80318 10.1526C3.22892 11.1804 3.94989 12.0589 4.87492 12.677C5.79995 13.2951 6.88748 13.625 8 13.625C9.49134 13.6233 10.9211 13.0302 11.9757 11.9756C13.0302 10.9211 13.6233 9.49133 13.625 8Z"
+        fill="#047647"
+      />
     </svg>
+    <div class="alert-title">Firma copiata</div>
+  </div>
+  }
+    <div class="signatureContainer">
+      <div class="containerMockup">
+        <div class="userLogo">
+          <svg
+            width="42"
+            height="41"
+            viewBox="0 0 42 41"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.5 33.5484C9.52496 31.6445 10.2927 29.8271 11.6371 28.4893C12.9815 27.1515 14.7944 26.4009 16.6837 26.3999H25.3163C27.2056 26.4009 29.0185 27.1515 30.3629 28.4893C31.7073 29.8271 32.475 31.6445 32.5 33.5484C29.3446 36.4141 25.2476 38 21 38C16.7524 38 12.6554 36.4141 9.5 33.5484ZM27.4744 15.525C27.4744 16.8155 27.0947 18.077 26.3833 19.1501C25.6719 20.2231 24.6607 21.0594 23.4776 21.5533C22.2946 22.0471 20.9928 22.1763 19.7369 21.9246C18.481 21.6728 17.3274 21.0514 16.4219 20.1388C15.5164 19.2263 14.8998 18.0637 14.65 16.7979C14.4002 15.5322 14.5284 14.2203 15.0184 13.028C15.5085 11.8357 16.3383 10.8166 17.403 10.0997C18.4677 9.38268 19.7195 9 21 9C22.7171 9 24.3639 9.68745 25.5781 10.9111C26.7923 12.1348 27.4744 13.7944 27.4744 15.525Z"
+              fill="white"
+            />
+            <path
+              d="M36.7655 33.5758C38.8699 31.0459 40.3335 28.0469 41.0326 24.8323C41.7316 21.6177 41.6455 18.2822 40.7815 15.1079C39.9175 11.9336 38.3011 9.0139 36.069 6.59581C33.8368 4.17772 31.0547 2.33238 27.9578 1.21587C24.8609 0.0993725 21.5405 -0.255438 18.2774 0.181459C15.0142 0.618355 11.9044 1.83411 9.21099 3.72586C6.51756 5.61762 4.31975 8.12973 2.80349 11.0497C1.28723 13.9696 0.497124 17.2115 0.500008 20.5011C0.501114 25.2832 2.1877 29.9122 5.2638 33.5758L5.2345 33.6007C5.33707 33.7237 5.4543 33.8291 5.5598 33.9506C5.69168 34.1014 5.83382 34.2435 5.97009 34.3899C6.38039 34.835 6.8024 35.2625 7.24493 35.6637C7.37974 35.7866 7.51895 35.9008 7.65522 36.018C8.12413 36.4221 8.60623 36.8057 9.1059 37.1629C9.17038 37.2068 9.22899 37.264 9.29347 37.3093V37.2918C12.7254 39.7049 16.8196 41 21.0161 41C25.2127 41 29.3068 39.7049 32.7388 37.2918V37.3093C32.8033 37.264 32.8604 37.2068 32.9263 37.1629C33.4246 36.8042 33.9081 36.4221 34.377 36.018C34.5133 35.9008 34.6525 35.7852 34.7873 35.6637C35.2298 35.261 35.6519 34.835 36.0622 34.3899C36.1984 34.2435 36.3391 34.1014 36.4725 33.9506C36.5765 33.8291 36.6952 33.7237 36.7978 33.5992L36.7655 33.5758ZM21.0147 8.78808C22.3188 8.78808 23.5937 9.1745 24.6781 9.89846C25.7625 10.6224 26.6076 11.6514 27.1067 12.8553C27.6058 14.0592 27.7364 15.384 27.482 16.662C27.2275 17.9401 26.5995 19.1141 25.6773 20.0355C24.7551 20.9569 23.5802 21.5844 22.3011 21.8387C21.022 22.0929 19.6961 21.9624 18.4912 21.4637C17.2864 20.9651 16.2565 20.1206 15.532 19.0371C14.8074 17.9536 14.4207 16.6798 14.4207 15.3767C14.4207 13.6293 15.1154 11.9534 16.352 10.7178C17.5886 9.48224 19.2658 8.78808 21.0147 8.78808ZM9.30226 33.5758C9.32768 31.6534 10.1096 29.8182 11.4788 28.4674C12.848 27.1165 14.6945 26.3586 16.6187 26.3576H25.4107C27.3349 26.3586 29.1813 27.1165 30.5505 28.4674C31.9197 29.8182 32.7016 31.6534 32.7271 33.5758C29.5134 36.4694 25.3407 38.0708 21.0147 38.0708C16.6886 38.0708 12.516 36.4694 9.30226 33.5758Z"
+              fill="#2463EB"
+            />
+          </svg>
+        </div>
+        <div class="mockupText">
+          <span class="placeholder-item" style="width: 150px;"></span>
+        </div>
+      </div>
+      <div class="placeholders">
+        @for(ph of placeholders(); track $index){
+          <div [style.width]="ph" class="placeholder-item"></div>
+        }
+      </div>
+      <app-signature></app-signature>
     </div>
-    <form [formGroup]="form">
-      <div class="formLine">
-        <lieveeto-select
-          [label]="'Azienda del gruppo DigitalPlatforms'"
-          [labelStyles]="{ color: 'white' }"
-          formControlName="azienda"
-          searchble
-          (selection)="checkAddressAndVersion($event)"
-          [options]="companies.value()!"
-        />
-        <lieveeto-select
-          [label]="'Versione logo'"
-          [labelStyles]="{ color: 'white' }"
-          formControlName="version"
-          [options]="versions()!"
-        />
+    <div style="margin-top: auto;">
+      <div class="buttonsContainer" >
+        <lieveeto-button (onClick)="copySignature()" [aspect]="'default-secondary'"
+        >
+        Copia la firma
+        </lieveeto-button>
+        @if(stepperService.isMobile()){
+
+          <lieveeto-button 
+          [aspect]="'default-tertiary'" 
+          (onClick)="stepperService.step.set(stepperService.step()-1)"
+          
+          >
+          <span style="color: white; text-decoration: underline;">
+            Indietro
+          </span>
+          </lieveeto-button>
+        }
+        
       </div>
-      <div class="formLine">
-        <lieeveto-input
-          formControlName="nomecognome"
-          [label]="'Nome e cognome'"
-          [labelStyles]="{ color: 'white' }"
-        />
-        <lieveeto-select
-          [label]="'Area di competenza'"
-          [labelStyles]="{ color: 'white' }"
-          searchble
-          withCustomValue
-          formControlName="area"
-          [options]="areas.value()!"
-        />
-      </div>
-      <lieveeto-select
-        [label]="'Titolo lavorativo'"
-        [labelStyles]="{ color: 'white' }"
-        multiple
-        searchble
-        withCustomValue
-        formControlName="ruolo"
-        [options]="roles.value()!"
-      />
-      <div style="display: grid;grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
-          <lieveeto-select
-          [label]="'Indirizzo'"
-          [labelStyles]="{ color: 'white' }"
-          formControlName="indirizzo"
-          [options]="workPlaces()!"
-          (selection)="checkInterno($event)"
-          />
-          <lieeveto-input
-            [label]="'Mobile (opzionale)'"
-            [labelStyles]="{ color: 'white' }"
-            [type]="'number'"
-            formControlName="mobile"
-          />
-          <lieeveto-input
-            [label]="'Interno (opzionale)'"
-            [labelStyles]="{ color: 'white' }"
-            [type]="'number'"
-            formControlName="interno"
-          />
-      </div>
-      <lieveeto-checkbox
-        [label]="'aggiungi banner'"
-        [labelStyles]="{ color: 'white' }"
-        formControlName="disclaimer"
-      />
-      <lieveeto-checkbox
-        [label]="'aggiungi avviso ambientale'"
-        [labelStyles]="{ color: 'white' }"
-        formControlName="avvisoambientale"
-      />
-    </form>
+    </div>
   </section>
+}
 </div>
+
+

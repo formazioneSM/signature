@@ -1,0 +1,41 @@
+:host {
+  margin-top: 21px;
+}
+.cols2-1row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 21px;
+}
+.cols-autofit-1row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 21px;
+}
+.disclaimerText {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Inter;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.03px;
+  margin: 16px 0 21px;
+}
+form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-bottom: 38px;
+}
+@media screen and (max-width: 900px) {
+  .cols2-1row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 21px;
+  }
+  .cols-autofit-1row {
+    grid-template-columns:1fr;
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
