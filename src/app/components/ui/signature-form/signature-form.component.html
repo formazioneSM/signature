@@ -14,17 +14,15 @@
     />
     <lieveeto-select
       [label]="'Versione logo'"
-      [placeholder]="'Seleziona versione logo'"
+      [placeholder]="'Statico'"
       formControlName="version"
       [options]="versions()!"
     />
   </div>
-  
 </div>
 }
 @if(!stepperService.isMobile() || (stepperService.step() === 2 && stepperService.isMobile())){
 <div>
-
   <div class="title">Dati personali</div>
   <div class="cols2-1row" style="margin-bottom: 21px;">
     <lieeveto-input
@@ -46,11 +44,9 @@
       formControlName="area"
       [options]="areas.value()!"
     />
-
     <lieveeto-select
       [label]="'Titolo lavorativo'"
       [placeholder]="'Aggiungi titolo lavorativo'"
-      
       searchble
       formControlName="ruolo"
       [options]="roles.value()!"
@@ -64,8 +60,6 @@
   <div
     class="cols-autofit-1row" 
   >
-
-
     <lieveeto-select
       [placeholder]="'Seleziona indirizzo'"
       [label]="'Indirizzo'"
@@ -73,27 +67,21 @@
       [options]="workPlaces()!"
       (selection)="checkInterno($event)"
     />
- 
-
     <lieeveto-input
       [label]="'Mobile (opzionale)'"
       [placeholder]="'Inserisci mobile'"
       [type]="'tel'"
       formControlName="mobile"
     />
-
      <lieeveto-input
       [placeholder]="'Inserisci interno'"
       [label]="'Interno (opzionale)'"
       [type]="'number'"
       formControlName="interno"
     />
- 
-   
   </div>
 </div>
 <div>
-
   <div class="title">Preferenze e consensi</div>
   <lieveeto-checkbox
     [label]="'Disclaimer di riservatezza (opzionale)'"
@@ -111,5 +99,4 @@
   </div>
 </div>
 }
-
 </form>

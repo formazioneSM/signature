@@ -38,14 +38,6 @@ export class SignatureComponent {
       name: 'Forum Retail',
       image: `${imgBasePath}forum_retail.png`
     },
-    // {
-    //   name: 'Forum PA ITA',
-    //   image: `${imgBasePath}banner_forum_pa_ita.png`
-    // },
-    // {
-    //   name: 'Forum PA ENG',
-    //   image: `${imgBasePath}banner_forum_pa_eng.png`
-    // }
   ]
 
   companies = companies;
