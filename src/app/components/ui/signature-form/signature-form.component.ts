@@ -99,10 +99,10 @@ checkAddressAndVersion(event:Option | null){
   }else{
     this.indirizzo?.enable();
   }
-  if(event !== null && event?.value?.versions?.length === 0){
-    this.versione?.disable()
-  }else if(event !== null && event?.value?.versions?.length > 0){
-    this.versione?.enable()
-  }
+  // if(event !== null && event?.value?.versions?.length === 0){
+  //   this.versione?.disable()
+  // }else if(event !== null && event?.value?.versions?.length > 0){
+  //   this.versione?.enable()
+  // }
 }
 }

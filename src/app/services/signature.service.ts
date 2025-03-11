@@ -1,6 +1,7 @@
-import { Injectable, signal, Signal } from '@angular/core';
+import { Injectable, linkedSignal, signal, Signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SignatureForm, SignatureFormValues } from '../models/signatureForm.model';
+import { Signature } from '../models/signature.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,4 +19,14 @@ export class SignatureService {
       this._formValue.set(value);
     });
   }
+  
+    signature = linkedSignal<
+      Partial<SignatureFormValues> | undefined,
+      Partial<Signature>
+    >({
+      source: () => this.formValue(),
+      computation: (source) => {
+        return source as Partial<Signature>;
+      },
+    });
 }

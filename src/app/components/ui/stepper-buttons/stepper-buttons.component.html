@@ -1,0 +1,15 @@
+<div class="stepperButton" >
+    <lieveeto-button (onClick)="stepperService.step.set(stepperService.step()+1)"
+    [disabled]="disabledButton()">
+      Avanti
+    </lieveeto-button>
+    @if(stepperService.step() > 1){
+      <lieveeto-button 
+      [aspect]="'default-tertiary'" 
+      (onClick)="stepperService.step.set(stepperService.step()-1)"
+      
+      >
+        Indietro
+      </lieveeto-button>
+    }
+  </div>

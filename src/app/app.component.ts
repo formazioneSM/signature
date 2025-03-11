@@ -1,27 +1,25 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   HostListener,
   inject,
-  linkedSignal,
-  signal,
+  signal
 } from '@angular/core';
 import { SignatureComponent } from './components/signature/signature.component';
 import { ButtonComponent } from './components/ui/button/button.component';
 import { SignatureFormComponent } from './components/ui/signature-form/signature-form.component';
-import { StepperService } from './services/stepper.service';
+import { StepperButtonsComponent } from './components/ui/stepper-buttons/stepper-buttons.component';
+import { StepperComponent } from './components/ui/stepper/stepper.component';
 import { SignatureService } from './services/signature.service';
-import { SignatureFormValues } from './models/signatureForm.model';
-import { Indirizzo, Signature } from './models/signature.model';
-import { JsonPipe } from '@angular/common';
+import { StepperService } from './services/stepper.service';
+import { AlertComponent } from './components/ui/alert/alert.component';
 document.ontouchmove = function (event) {
   event.preventDefault();
 };
 
 @Component({
   selector: 'app-root',
-  imports: [SignatureComponent, ButtonComponent, SignatureFormComponent],
+  imports: [SignatureComponent, ButtonComponent, SignatureFormComponent, StepperComponent, StepperButtonsComponent, AlertComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,31 +44,8 @@ export class AppComponent {
     );
   }
   signatureService = inject(SignatureService);
-  signatureData = this.signatureService.formValue;
-  signature = linkedSignal<
-    Partial<SignatureFormValues> | undefined,
-    Partial<Signature>
-  >({
-    source: () => this.signatureService.formValue(),
-    computation: (source) => {
-      return source as Partial<Signature>;
-    },
-  });
-  disabledButton = computed( () => {
-    return this.stepperService.step() === 1 && (
-      this.signature().azienda === null || 
-      this.signature().azienda === undefined
-  ) ||
-    this.stepperService.step() === 2 && (
-      this.signature().nome === '' ||
-          this.signature().cognome === '' ||
-          (this.signature().area === null || this.signature().area?.name === '') ||
-          (this.signature().ruolo === null || this.signature().ruolo?.name === '')
-    ) ||
-    this.stepperService.step() === 3 && (
-      (this.signature().indirizzo as any) === '' || this.signature().indirizzo === null || (this.signature().indirizzo as Indirizzo)?.name === ''
-    )
-  })
+  signature = this.signatureService.signature;
+
   copySignature = () => {
     window.getSelection()!.removeAllRanges();
     const body = document.querySelector('#signature');

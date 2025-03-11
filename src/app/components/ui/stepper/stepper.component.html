@@ -1,0 +1,22 @@
+<div class="stepper">
+    <div class="infoContainer">
+      <div class="number" [class.active]="stepperService.step() === 1 || stepperService.step() > 1">1</div>
+      <span [class.active]="stepperService.step() === 1 || stepperService.step() > 1">Azienda</span> 
+    </div>
+    <div class="infoContainer">
+      <div class="number" 
+      [class.active]="stepperService.step() === 2 || stepperService.step() > 2"
+     >2</div>
+      <span 
+      [class.active]="stepperService.step() === 2 || stepperService.step() > 2"
+     >Dati personali</span> 
+    </div>
+    <div class="infoContainer" >
+      <div class="number" 
+      [class.disabled]="stepperService.step() === 1" 
+      [class.active]="stepperService.step() === 3 || stepperService.step() > 3" >3</div>
+      <span 
+      [class.active]="stepperService.step() === 3 || stepperService.step() > 3"
+      [class.disabled]="stepperService.step() === 1">Contatti e preferenze</span> 
+    </div>
+  </div>

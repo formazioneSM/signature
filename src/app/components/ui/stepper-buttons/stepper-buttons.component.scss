@@ -1,0 +1,11 @@
+.stepperButton {
+  display: none;
+}
+@media screen and (max-width: 900px) {
+  .stepperButton {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+}

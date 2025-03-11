@@ -1,9 +1,9 @@
 
 <form [formGroup]="form" >
-  @if(!stepperService.isMobile() || (stepperService.step() === 1 && stepperService.isMobile())){
+@if(!stepperService.isMobile() || (stepperService.step() === 1 && stepperService.isMobile())){
 <div>
   <div class="title">Informazioni azienda</div>
-  <div class="cols2-1row" >
+  <div class="cols1-1row" >
     <lieveeto-select
       [label]="'Azienda del gruppo DigitalPlatforms'"
       [placeholder]="'Seleziona la tua azienda'"
@@ -12,12 +12,14 @@
       (selection)="checkAddressAndVersion($event)"
       [options]="companies.value()!"
     />
-    <lieveeto-select
-      [label]="'Versione logo'"
-      [placeholder]="'Statico'"
-      formControlName="version"
-      [options]="versions()!"
-    />
+    <div style="display: none;">
+      <lieveeto-select
+        [label]="'Versione logo'"
+        [placeholder]="'Statico'"
+        formControlName="version"
+        [options]="versions()!"
+      />
+    </div>
   </div>
 </div>
 }
@@ -41,7 +43,6 @@
       [label]="'Area di competenza'"
       [placeholder]="'Seleziona la tua area di competenza'"
       searchble
-      withCustomValue
       formControlName="area"
       [options]="areas.value()!"
     />
@@ -49,7 +50,6 @@
       [label]="'Titolo lavorativo'"
       [placeholder]="'Aggiungi titolo lavorativo'"
       searchble
-      withCustomValue
       formControlName="ruolo"
       [options]="roles.value()!"
     />

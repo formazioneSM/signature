@@ -1,6 +1,11 @@
 :host {
   margin-top: 21px;
 }
+.cols1-1row{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 21px;
+}
 .cols2-1row {
   display: grid;
   grid-template-columns: 1fr 1fr;
