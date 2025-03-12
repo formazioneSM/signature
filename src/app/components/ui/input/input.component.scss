@@ -64,6 +64,9 @@
       outline: 1px solid var(--border-error, #f04438)!important;
       border: none;
     }
+    .helperText{
+      color: var(--border-error, #f04438) !important;
+    }
   }
   &:disabled {
     input {

@@ -10,7 +10,7 @@
 }@else {
     <div class="my-checkbox" [class.disabled]="disabled()" (click)="onClickCheckbox($event) " >
         <input
-        
+          (keyup.enter)="onClickCheckbox($event)"
         onmousedown="event.preventDefault()"
           [disabled]="disabled()"
           [checked]="checked()"

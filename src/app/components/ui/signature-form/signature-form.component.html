@@ -47,6 +47,7 @@
       searchble
       formControlName="area"
       [options]="areas.value()!"
+      [helperText]="area?.invalid && area?.touched ? 'Seleziona un\'opzione dall\'elenco. Non è possibile inserire valori personalizzati.' : ''"
     />
     <lieveeto-select
       [label]="'Titolo lavorativo'"
@@ -71,6 +72,8 @@
       formControlName="indirizzo"
       [options]="workPlaces()!"
       (selection)="checkInterno($event)"
+      [helperText]="indirizzo?.invalid && indirizzo?.touched ? 'Inserisci un\'indirizzo valido' : ''"
+
     />
     <lieeveto-input
       [label]="'Mobile (opzionale)'"
