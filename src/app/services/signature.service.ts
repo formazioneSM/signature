@@ -17,6 +17,7 @@ export class SignatureService {
     // Aggiorno il segnale ogni volta che cambia la form
     form.valueChanges.subscribe(value => {
       this._formValue.set(value);
+      
     });
   }
   

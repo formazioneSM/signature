@@ -31,11 +31,13 @@
       formControlName="nome"
       [label]="'Nome'"
       [placeholder]="'Inserisci nome'"
+      [helperText]="nome?.touched && nome?.invalid ? 'inserire il nome' : ''"
     />
     <lieeveto-input
       formControlName="cognome"
       [label]="'Cognome'"
       [placeholder]="'Inserisci cognome'"
+      [helperText]="cognome?.touched && cognome?.invalid ? 'inserire il cognome' : ''"
     />
   </div>
   <div class="cols2-1row">
@@ -52,6 +54,7 @@
       searchble
       formControlName="ruolo"
       [options]="roles.value()!"
+      [helperText]="ruolo?.invalid && ruolo?.touched ? 'Seleziona un\'opzione dall\'elenco. Non è possibile inserire valori personalizzati.' : ''"
     />
   </div>
 </div>

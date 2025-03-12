@@ -1,14 +1,26 @@
-input::placeholder{
+input::placeholder {
   color: var(--foreground-disabled);
+}
+.helperText {
+  color: var(--foreground-tertiary, #475569);
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 13px; 
+  margin-left: 10px;
 }
 :host {
   width: 100%;
-  &.ng-invalid {
+  &.ng-invalid.ng-touched.ng-dirty {
     .select {
-      outline: 1px solid var(--border-error, #f04438);
+      border: 1px solid var(--border-error, #f04438) !important;
+    }
+    .helperText{
+      color: var(--border-error, #f04438) !important;
     }
   }
-  &:has(button:disabled){
+  &:has(button:disabled) {
     pointer-events: none;
   }
   &[ng-reflect-is-disabled="true"] {
@@ -134,12 +146,13 @@ input::placeholder{
       min-width: 25px;
       transition: rotate 0.1s ease-in-out;
     }
-    
-    &:focus, &:has(input:focus){
+
+    &:focus,
+    &:has(input:focus) {
       outline: 1px solid var(--border-brand, #0c8ced);
     }
-    &:disabled{
-      background: var(--background-tertiary, #F1F5F9);
+    &:disabled {
+      background: var(--background-tertiary, #f1f5f9);
     }
     &:focus-within .options {
       display: flex;
@@ -213,10 +226,14 @@ input::placeholder{
   }
 }
 @keyframes blink_input_opacity_to_prevent_scrolling_when_focus {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .input:focus {
-    animation: blink_input_opacity_to_prevent_scrolling_when_focus 0.01s;
+  animation: blink_input_opacity_to_prevent_scrolling_when_focus 0.01s;
 }

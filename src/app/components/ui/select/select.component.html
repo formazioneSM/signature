@@ -5,11 +5,13 @@
   </label>
   }
   <button
+  tabindex="-1"
     #hiddenSelect
-    style="opacity: 0; position: fixed"
+    style="opacity: 0; position: fixed;pointer-events: none;"
     (keyup.enter)="_select()?.nativeElement.focus()"
   ></button>
   <button
+  tabindex="0"
     [disabled]="disabled()"
     class="select"
     #select
@@ -24,7 +26,7 @@
     <ng-container>
       @if(multiple() && ((selectedValue()?.length)! === 0 || selectedValue() ===
       null)){
-      <div class="option" style="width: 100%; padding-left: 0" (click) ="handleInputFocus($event)">
+      <div tabindex="-1" class="option" style="width: 100%; padding-left: 0" (click) ="handleInputFocus($event)">
         <svg
           width="17"
           height="16"
@@ -45,7 +47,6 @@
           class="defaultValue"
         >
         @if(searchble()){
-
           <input
             type="text"
             (click)="handleInputFocus($event)"
@@ -65,14 +66,15 @@
       </div>
       }@else { @if(!multiple()){
       <div
+      tabindex="-1"
         class="selectedValue"
         [class.placeholder]="
           selectedValue() === null && !multiple()
         "
-    
       >
       @if(searchble()){
         <input
+        tabindex="-1"
           type="text"
           (touchstart)="handleInputFocus($event)"
           (click)="handleInputFocus($event)"
@@ -82,14 +84,14 @@
           [value]="selectedValue()"
         />
       }@else{
-        <span [class.placeholder]="
+        <span tabindex="-1" [class.placeholder]="
         selectedValue() === null && !multiple()
       " style="white-space: nowrap;">{{selectedValue()??placeholder()}}</span>
       }
       </div>
       }@else{
 
-        <div class="container-multiple-values" >
+        <div class="container-multiple-values" tabindex="-1">
           @for (value of selectedValue(); track customTrack(value)) {
             @if($index === 0){
 
@@ -118,7 +120,7 @@
           }
         </div>
 
-      <div  style="display: flex; align-items: center;white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+      <div tabindex="-1" style="display: flex; align-items: center;white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
         <svg
           width="17"
           height="16"
@@ -156,15 +158,17 @@
     </ng-container>
     <!--INIZIO CONTENITORE OPTIONS-->
     <div
+    tabindex="-1"
       class="options"
       #optionsElement
       [style.border]="
         multiple() ? 'none' : '1px solid var(--border-primary, #cbd5e1)'
       "
     >
-      <ng-scrollbar style="width: 100%">
+      <ng-scrollbar style="width: 100%" tabindex="-1">
         @if(!multiple()){
         <div 
+        tabindex="-1"
         (touchstart)="onTouchStart($event)"
         (touchmove)="onTouchMove($event)"
         (touchend)="onTouchEnd($event, null, select)"
@@ -177,11 +181,12 @@
         </div>
         } @for(option of filteredOptions().length > 0 ? filteredOptions() :
         internalOptions();track customTrack(option)){ @if(option.category){
-        <div class="option">
+        <div class="option" tabindex="-1">
           <div class="category">{{ option.category }}</div>
         </div>
         }
         <div
+        tabindex="-1"
           class="option"
           (touchstart)="onTouchStart($event)"
           (touchmove)="onTouchMove($event)"
@@ -268,4 +273,9 @@
       <!--FINE FRECCIA DROPDOWN-->
     </div>
   </button>
+  @if(helperText()){
+    <div class="helperText" tabindex="-1">
+      {{helperText()}}
+    </div>
+  }
 </div>

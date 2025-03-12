@@ -1,6 +1,7 @@
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
@@ -100,10 +101,12 @@ export class SelectComponent implements ControlValueAccessor {
   private _hiddenSelect = viewChild<ElementRef<any>>('hiddenSelect');
   private searchInput = viewChild<ElementRef<any>>('searchInput');
   private platformService = inject(PlatformService);
+  private _cdr = inject(ChangeDetectorRef);
   private selectedOptions:Option[] = []
   private inputSingleValue =
     viewChild<ElementRef<HTMLInputElement>>('inputSingleValue');
   label = input<string | undefined>();
+  helperText = input<string>('');
   multiple = input(false, { transform: booleanAttribute });
   placeholder = input<string | undefined>(
     this.multiple() ? 'Aggiungi elemento' : 'Seleziona elemento'
@@ -135,8 +138,7 @@ export class SelectComponent implements ControlValueAccessor {
         return source.options.find((o: Option) => o.selected)?.name ?? null;
       } else {
         return this.selectedOptions;
-        // let filteredOptions = source.options.filter((o: Option) => o.selected).toSorted((a,b) => a.id!-b.id!);
-        // return filteredOptions.length === 0 ? null : filteredOptions;
+
       }
     },
   });
@@ -162,13 +164,11 @@ export class SelectComponent implements ControlValueAccessor {
       this.moved = true;
     }
   }
-
   onTouchEnd(event: TouchEvent, option: any, select: any) {
     if (!this.moved) {
       this.selectValue(option, select, event); // Solo se non c'è stato scroll
     }
   }
-
   onMouseDown(event: MouseEvent, option: any, select: any) {
     event.stopPropagation();
 
@@ -179,11 +179,6 @@ export class SelectComponent implements ControlValueAccessor {
       event.preventDefault();
       this.selectValue(option, select, event);
     }
-  }
-  getNameLength(){
-   
-      return `calc(${this.selectedOptions[0].name?.length.toString()}ch + 10ch + 16px)`
-  
   }
   onClick(event: MouseEvent, option: any, select: any) {
     if (this.platformService.isChromeDesktop()) {
@@ -383,8 +378,9 @@ export class SelectComponent implements ControlValueAccessor {
       .map((s) => ({ name: s.name, value: s }))
       .map((v) => v.value);
     this.onChange(this.multiple() ? mappedValue : mappedValue[0] ?? null);
-    this.onTouched();
+  
     this.selection.emit(this.multiple() ? mappedValue : mappedValue[0] ?? null);
+    this._cdr.markForCheck();
   }
   /**
    * @name filterElements
@@ -393,6 +389,7 @@ export class SelectComponent implements ControlValueAccessor {
    * @description dato l'evento della input di ricerca filtra gli elementi tra le options disponibili
    */
   filterElements(event: Event): void {
+    this.selectValue(null, this._select()?.nativeElement);
     let value = (event.target as any).value;
     let filteredValues = this.internalOptions().filter(
       (o: Option) =>
@@ -517,6 +514,7 @@ export class SelectComponent implements ControlValueAccessor {
       this.filteredOptions.set([]);
       this.selection.emit(option);
       this.notifyChange();
+    
       select.blur();
 
       return;
@@ -632,6 +630,7 @@ export class SelectComponent implements ControlValueAccessor {
         this.setOptionsPosition(this._select()?.nativeElement);
       }, 10);
     }
+    this.onTouched();
   }
 
   handleInputFocus(event: Event) {

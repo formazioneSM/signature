@@ -1,6 +1,5 @@
 :host {
   width: 100%;
-  
   input {
     display: flex;
     height: 48px;
@@ -24,6 +23,7 @@
     }
     &:focus {
       outline: 1px solid var(--border-brand, #0c8ced);
+      border: none;
     }
     &:disabled{
       background: var(--background-tertiary, #F1F5F9);
@@ -41,14 +41,12 @@
   }
   .helperText {
     color: var(--foreground-tertiary, #475569);
-    /* Inter/Caption */
     font-family: Inter;
-    font-size: 12px;
+    font-size: 10px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.048px;
-    margin: 5px 0 5px 5px;
+    line-height: 13px; 
+    margin-left: 10px;
   }
   label {
     color: var(--foreground-secondary, #334155);
@@ -61,9 +59,10 @@
     letter-spacing: 0.014px;
     margin: 0 0 5px 5px;
   }
-  &.ng-invalid {
+  &.ng-invalid.ng-touched.ng-dirty {
     input {
-      outline: 1px solid var(--border-error, #f04438);
+      outline: 1px solid var(--border-error, #f04438)!important;
+      border: none;
     }
   }
   &:disabled {
